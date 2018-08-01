@@ -1,0 +1,210 @@
+/* standaridze */
+
+@font-face {
+	font-family: 'Anton';
+	src: url('assets/Anton-Regular.ttf');
+}
+* {
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+body, html {
+	margin: 0;
+	padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Anton', sans-serif;
+}
+
+/* Pages */
+
+.h {
+	display: none;
+}
+html {
+	background-color: #777777;
+}
+
+/* Display Page */
+
+#display-page #display{
+	background: url('assets/blank.jpg') no-repeat center center fixed;
+	background-size: contain;
+	height: 100vh;
+	width: 100vw;
+}
+#display-page, #setup-page {
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	left: 0;
+	top: 0;
+	overflow: hidden;
+}
+#imagetimer {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 10px;
+	opacity: .3;
+	font-weight: bolder;
+	font-size: 2em;
+}
+
+.fsoverlay {
+	display: none;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+/* Image Effects */
+
+.flip-h {
+	transform: scaleX(-1);
+}
+.flip-v {
+	transform: scaleY(-1);
+}
+.grayscale {
+	filter: grayscale(100%);
+}
+
+
+/* Display Toolbar */
+
+.sq,
+#display-toolbar button,
+#display-toolbar input[type="range"] {
+	width: 50px;
+	height: 50px;
+}
+
+#display-toolbar {
+	position: fixed;
+	right: 0;
+	top: 0;
+}
+#display-toolbar button {
+	display: block;
+}
+
+/* hide buttons */
+
+#display-page button,
+#display-toolbar,
+#display-page input
+{
+	visibility: hidden;
+}
+html:hover #display-page button,
+html:hover #display-toolbar,
+html:hover #display-page input
+{
+	visibility: visible;
+}
+#preloader {
+	display: block;
+	visibility: hidden;
+	position: fixed;
+
+}
+#countdown {
+	background-color: #222;
+}
+#countdown .timer {
+	margin-top: 45vh;
+	color: #999;
+}
+
+/* Settings Page */
+#mode-settings div {
+	display: none;
+}
+#mode-settings div.active {
+	display:block;
+}
+.panel {
+	max-width: 500px;
+	height: 75vh;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 12.5vh;
+	box-shadow: 0 1em 1em rgba(0,0,0, .2);
+	background-color: #999;
+	color: #333;
+	/*overflow: hidden;*/
+}
+.panel h1 {
+	height: 10vh;
+}
+#settings {
+	height: 65vh;
+	width: 100%;
+	padding-left: 1em;
+	padding-right: 1em;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding-bottom: 1em;
+}
+.panel textarea {
+	width: 100%;
+	overflow-y: hidden;
+	resize: none;
+	padding: 10px;
+}
+h1 {
+	text-align: center;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+.active {
+	background-color: #9f9;
+}
+#mode-settings div.active {
+	background-color: transparent;
+}
+* {
+	outline: none;
+}
+#settings textarea {
+	resize: none;
+	overflow-y: hidden;
+	min-height: 30px;
+	font-family: monospace;
+}
+#fixed-custom-time:after {
+	content: "m";
+}
+
+/* stylin */
+
+textarea, input[type="number"] {
+	background-color: #ccc;
+	border: 1px inset;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.1) inset;
+}
+.panel label {
+	font-weight: bold;
+}
+.panel, button, input, textarea {
+	border-radius: 3px;
+}
+button {
+	border: 1px outset;
+	text-shadow: 0 1px 0 rgba(255,255,255,.7);
+	box-shadow: 1px 1px 1px rgba(0,0,0,.1);
+}
+button:hover {
+	background-color: #ccc;
+	box-shadow: 2px 2px 1px rgba(0,0,0,.1);
+}
+button:active {
+	border-style: inset;
+	box-shadow: 2px 2px 1px rgba(0,0,0,.1) inset;
+}
