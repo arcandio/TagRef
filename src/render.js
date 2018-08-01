@@ -157,12 +157,13 @@ function startNewSession () {
 function doCountdown(length){
 	state.countdownend = new Date().getTime() + length*1000;
 	showCountdown();
-	document.querySelector("#countdown .timer").innerHTML = length;
+	let ct = document.querySelector("#countdown .timer")
+	ct.innerHTML = length;
 	state.countdown = setInterval(function() {
 		let now = new Date().getTime();
 		let distance = state.countdownend - now;
 		let t = Math.round(distance/1000);
-		document.querySelector("#countdown .timer").innerHTML = t;
+		ct.innerHTML = t;
 		soundTest(t);
 		if (t<=0){
 			doEvent();
@@ -190,6 +191,7 @@ function soundTest(t){
 class ev {
 	constructor (time, istimed, image, fliph, flipv, grayscale, isbreak, breakmessage) {
 		this.time = time;
+		this.istimed = istimed;
 		this.image = image;
 		this.fliph = fliph ? Math.round(Math.random()*2) - 1 : false;
 		this.flipv = flipv ? Math.round(Math.random()*2) - 1 : false;
@@ -229,7 +231,7 @@ function buildEventList() {
 		case "structured":
 			break;
 	}
-	console.log(state.events);
+	//console.log(state.events);
 }
 function selectImage() {
 	// randomly pick an image from state.files
@@ -271,32 +273,63 @@ function showImage(e) {
 function doEvent(reverse) {
 	// pick the next event to show, whether it's forward or backward
 	state.eventindex += reverse ? -1 : 1;
+	//console.log(state.eventindex);
 	// clamp the event index for safety
-	state.eventindex = clamp(state.eventindex, 0, state.events.length - 1);
-	console.log(state.eventindex);
-	// get the event object from the index
-	let e = state.events[state.eventindex];
-	// display image
-	showImage(e);
-	// setup countdown
-	if (e.istimed){
-		startTimer(e);
+	// if it's less than 0, just clamp
+	if (state.eventindex < 0) {
+		state.eventindex = 0
+	}
+	// if it's greater than the max, the session is complete.
+	else if (state.eventindex > state.events.length - 1) {
+		console.log(state.eventindex);
+		// session's complete. Show the completed screen
+		document.getElementById("all-done").style.display = "block";
+		clearInterval(state.timer);
+		//state.timer = 0;
+	}
+	else {
+		// hide the completed screen
+		document.getElementById("all-done").style.display = "none";
+		// get the event object from the index
+		let e = state.events[state.eventindex];
+		// display image
+		showImage(e);
+		// setup countdown
+		if (e.istimed){
+			startTimer(e);
+		}
 	}
 
 }
 function startTimer(e) {
 	state.timerend = new Date().getTime() + e.time * 1000;
-	document.getElementById('imagetimer').innerHTML = e.time;
-	state.timer = setInterval(
-		
-		, 1000)
+	//console.log(e)
+	let it = document.getElementById('imagetimer')
+	it.innerHTML = e.time;/*
+	console.log(state.timer)
+	if (state.timer) {
+		clearInterval(state.timer);
+		state.timer = null;
+	}*/
+	state.timer = setInterval(function() {
+		let now = new Date().getTime();
+		let distance = state.timerend - now;
+		let t = Math.round(distance/1000);
+		it.innerHTML = t;
+		if (t <= 0) {
+			if (state.eventindex < state.events.length - 1){
+				doEvent();
+				clearInterval(state.timer);
+				console.log("cleared timer #" + state.timer)
+				//state.timer = 0;
+			}
+		}
+		soundTest(t);
+	}, 1000)
+	console.log("created timer #" + state.timer)
 }
 function pauseTimer(e) {
 	state.paused = !state.paused;
-}
-function endTimer(e) {
-
-	doEvent();
 }
 function writeLog(){
 	let f = document.getElementById("display").style.backgroundImage;
