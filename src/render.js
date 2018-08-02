@@ -13,6 +13,7 @@ model.free = {};
 model.structured = {};
 model.mode = '';
 let state = {};
+state.timers = [];
 let bip = new Audio('assets/bip.wav');
 let beep = new Audio('assets/beeem.wav');
 
@@ -296,40 +297,59 @@ function doEvent(reverse) {
 		showImage(e);
 		// setup countdown
 		if (e.istimed){
-			startTimer(e);
+			startTimer(e.time);
 		}
 	}
 
 }
-function startTimer(e) {
-	state.timerend = new Date().getTime() + e.time * 1000;
+function startTimer(remaining) {
+	state.timerend = new Date().getTime() + remaining * 1000;
 	//console.log(e)
-	let it = document.getElementById('imagetimer')
-	it.innerHTML = e.time;/*
+	let it = document.getElementById('imagetimer');
+	it.innerHTML = remaining;/*
 	console.log(state.timer)
 	if (state.timer) {
 		clearInterval(state.timer);
 		state.timer = null;
 	}*/
-	state.timer = setInterval(function() {
-		let now = new Date().getTime();
-		let distance = state.timerend - now;
-		let t = Math.round(distance/1000);
-		it.innerHTML = t;
-		if (t <= 0) {
-			if (state.eventindex < state.events.length - 1){
-				doEvent();
-				clearInterval(state.timer);
-				console.log("cleared timer #" + state.timer)
-				//state.timer = 0;
-			}
-		}
-		soundTest(t);
-	}, 1000)
-	console.log("created timer #" + state.timer)
+	state.timer = setInterval(timerTick, 1000);
+	console.log(state.timers);
 }
-function pauseTimer(e) {
+function timerTick () {
+	let now = new Date().getTime();
+	let distance = state.timerend - now;
+	state.t = Math.round(distance/1000);
+	let it = document.getElementById('imagetimer');
+	it.innerHTML = state.t;
+	if (state.t <= 0) {
+		// if we still have events to do, do one
+		if (state.eventindex < state.events.length - 1){
+			clearInterval(state.timer);
+			doEvent();
+			//state.timer = 0;
+		}
+		// if we DON'T have events left to do,
+		// and if there's still an active timer,
+		// turn it off
+		else if (state.timer) {
+			console.log("clearing timer #" + state.timer);
+			clearInterval(state.timer);
+		}
+	}
+	soundTest(state.t);
+}
+function pauseTimer() {
 	state.paused = !state.paused;
+	// if we're not paused, restart the timer
+	if (!state.paused) {
+		state.timer = setInterval(timerTick, 1000);
+	}
+	// if we're paused, set the remaining time so we can get it later
+	else {
+		let now = new Date().getTime();
+		state.remaining = state.timerend - now;
+		clearInterval(state.timer);
+	}
 }
 function writeLog(){
 	let f = document.getElementById("display").style.backgroundImage;
@@ -419,6 +439,13 @@ function updateUI() {
 		document.getElementById("mutetb").classList.remove("active")
 		document.getElementById("mutest").classList.remove("active")
 	}
+	// pause
+	if (state.paused) {
+		document.getElementById("pause").classList.add("active");
+	}
+	else{
+		document.getElementById("pause").classList.remove("active");
+	}
 }
 
 /* Utility */
@@ -476,6 +503,29 @@ function rantInt(max){
 }
 function clamp(num, min, max) {
   return num <= min ? min : num >= max ? max : num;
+}
+// reference https://stackoverflow.com/questions/8126466/how-do-i-reset-the-setinterval-timer
+function Timer(fn, t) {
+	var timerObj = setInterval(fn, t);
+	this.stop = function() {
+		if(timerObj){
+			clearInterval(timerObj);
+			timerObj = null;
+		}
+		return this;
+	}
+	this.start = function () {
+		if(!timerObj) {
+			this.stop();
+			timerObj = setInterval(fn, t);
+		}
+		return this;
+	}
+	this.reset = function(newT) {
+		t = newT;
+		return this.stop().start();
+	}
+
 }
 
 /* Data */
