@@ -8,13 +8,15 @@
 	<body>
 		<div id="setup-page" class="page">
 			<div class="panel">
-				<h1>Settings</h1>
+				<h1>TagRef Settings</h1>
 				<div id="settings">
 					<div id="root-settings">
 						<button id="choose-folder" onclick="selectFolder()">Choose Folder</button>
 						<ul id="root-folders"></ul>
-						<textarea id="blacklist" placeholder="images removed from possible results, 1 per line" onkeyup="setFilters()"></textarea>
-						<textarea id="blockfilter" placeholder="words or tags to block from image names, 1 per line" onkeyup="setFilters()"></textarea>
+						<textarea id="searchfilter" placeholder="Search List: only include files containing one of these words, 1 per line" onkeyup="setFilters()"></textarea>
+						<textarea id="blacklist" placeholder="Blacklist: images removed from possible results, 1 per line" onkeyup="setFilters()"></textarea>
+						<textarea id="blockfilter" placeholder="Block Filter: words or tags to block from image names, 1 per line" onkeyup="setFilters()"></textarea>
+						<p>File Count: <span id="filecount">0</span> </p>
 					</div>
 					<hr>
 					<div id="mode-tabs">
@@ -72,7 +74,8 @@
 					<button onclick="mute()" id="mutest">Mute</button>
 					<hr>
 					<button onclick="startNewSession()" class="startbutton">Start Session</button>
-					<button onclick="saveFile()">Save Session</button>
+					<button onclick="saveAs()" title="once saved, your session will be automatically saved on change.">Save Session File</button>
+					<button onclick="">Load Session File</button>
 					<button onclick="showAbout()">About</button> 
 					<button onclick="showData()">Data</button> 
 				</div>
@@ -118,24 +121,59 @@
 				<h1>About</h1>
 				<div>
 					<button onclick="togglePage('setup')">Back</button> 
-					<div class="stats"></div>
 					<h2>About TagRef</h2>
 					<p>TagRef is a small app designed to show you a well-defined subset of your reference material in a structured or timed manner.</p>
-					<p><a href="https://github.com/arcandio/TagRef/issues">Bugs and issues</a></p>
+					<p><a href="https://github.com/arcandio/TagRef/issues">Bugs, issues, and suggestions</a></p>
 					<p>Designed by <a href="http://arcandio.com">Joe Bush.</a></p>
-					<button onclick="togglePage('setup')">Back</button> 
+					<h2>Donations</h2>
+					<p>If TagRef helps you, consider donating.</p>
+					<h3>Donate via bitcoin</h3>
+					<p>
+						3BjKNt5XH7w2TRGKbhpr1F7Pc54qEHcc7P
+						<img src="assets/3BjKNt5XH7w2TRGKbhpr1F7Pc54qEHcc7P.png" class="qr">
+					</p>
+					<p>
+					<h3>Donate via paypal</h3>
+						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+						<input type="hidden" name="cmd" value="_s-xclick">
+						<input type="hidden" name="hosted_button_id" value="UUE2QYYRZYBNL">
+						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+						</form>
+					</p>
+					<h2>How TagRef Picks Files</h2>
+					<p>TagRef is designed to show you only the images you want. To do this, it picks files in 4 stages.</p>
+					<p>In the first stage, you pick one or more folders containing your images, using the Choose Folder button. The folders you're selecting from will be displayed below the button. At this point, it will select all image files in those folders and in subfolders with the extensions: *.jpg, *.png, *.tiff, or *.webp.</p>
+					<p>In the second stage, the Search Filter is applied. Only images whose filenames contain one of the terms in the Search Filter will be kept. You can use this to look for images labeled "Value" or "Gesture" for example.</p>
+					<p>In the third stage, all the images in the Blacklist are removed from the list. You can manually add files to the Blacklist, but it's easier to hit the Blacklist button during a session to remove files you don't want to see again.</p>
+					<p>Lastly, any images matching the terms in the Block Filter are removed. You can use this to remove "Nude" models, images by a specific artist, or whatever else you want to put in your filenames.</p>
+					<p>Remember that TagRef operates solely on the filenames, and doesn't know anything about the image itself. It's up to you to curate, label, and tag your images appropriately. I recommend TagSpaces for that duty, and I also recommend labeling each file with the artist, photographer, or source, for later reference in the Drawing Log.</p>
+					<h2>Features & Tips</h2>
+					<ul>
+						<li>You can press "F11" on the keyboard to fullscreen the app!</li>
+						<li>Once you've saved a file, it will be automatically updated and saved as you change settings. Hit the Save Session button again to save a new file.</li>
+						<li>Filter Lists are handled on a line-by-line basis; if you enter "gesture drawing" on one line in the Search Filter, for example, the only results returned will include that phrase exactly.</li>
+						<li>You can set abitrary minute percentages with the custom time box, like ".1" for 6 seconds.</li>
+
+					</ul>
+					<button onclick="togglePage('setup')">Back</button>
+
 				</div>
 			</div>
 		</div>
 		<div id="data-page" class="page h">
 			<div class="panel">
 				<h1>Data</h1>
-				<div class="stats"></div>
-			</div>
-		</div>
-		<div id="thumbnail-page" class="page h">
-			<div class="panel">
-				<h1>Thumbnails</h1>
+				<div>
+					<button onclick="togglePage('setup')">Back</button>
+					<div class="stats"></div>
+					<h2>Your Data</h2>
+					<p>Your data is stored in this app's LocalStorage. You can clear that data at any time.
+					<button>Clear All Data</button>
+					</p>
+					<p>Information about the names of your files is not stored in the app, but it <em>is</em> stored in your log files, if you choose to enable "Save drawing log." This feature records the time and filename only.</p>
+					<button onclick="togglePage('setup')">Back</button>
+				</div>
 			</div>
 		</div>
 		<script type="text/javascript" src="render.js"></script>

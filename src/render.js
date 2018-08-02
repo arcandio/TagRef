@@ -63,25 +63,48 @@ function globComplete(err, matches) {
 	removeFiles(matches);
 }
 function removeFiles(files) {
-	// concat the blacklist and block filter arrays
-	let temp = [];
-	let removalarray = cleanArray(model.blacklist.concat(blockfilter));
-	//console.log(removalarray);
-	for (let i=0; i<files.length; i++) {
-		if (!containsAny(files[i], removalarray)) {
-			temp.push(files[i]);
+	//console.log(files);
+	let searched = [];
+	// iterate through the searchlist and keep only matches
+	let searcharray = cleanArray(model.searchfilter);
+	//console.log(searcharray);
+	if (searcharray.length) {
+		for (let i=0; i<files.length; i++){
+			if(containsAny(files[i], searcharray)){
+				searched.push(files[i]);
+			}
 		}
 	}
-	state.files = temp;
-	//console.log(state.files.length);
-	//console.log(files);
+	else {
+		searched = files.slice();
+	}
+	//console.log(searched);
+	let unblocked = [];
+	// concat the blacklist and block filter arrays
+	let removalarray = cleanArray(model.blacklist.concat(model.blockfilter));
+	//console.log(removalarray);
+	for (let i=0; i<searched.length; i++) {
+		if (!containsAny(searched[i], removalarray)) {
+			unblocked.push(searched[i]);
+		}
+	}
+	//console.log(unblocked);
+	state.files = unblocked;
+	// file count
+	document.getElementById("filecount").innerHTML = state.files ? state.files.length : 0;
+	console.log(state.files.length);
 }
 function setFilters() {
-	model.blacklist = [];
+	// get from UI
+	model.searchfilter = document.getElementById("searchfilter").value.split("\n");
 	model.blacklist = document.getElementById("blacklist").value.split("\n");
-	model.blockfilter = [];
 	model.blockfilter = document.getElementById("blockfilter").value.split("\n");
+	// replace empties
+	model.searchfilter = model.searchfilter ? model.searchfilter : [];
+	model.blacklist = model.blacklist ? model.blacklist : [];
+	model.blockfilter = model.blockfilter ? model.blockfilter : [];
 	saveSession();
+	doGlob();
 	updateUI();
 }
 
@@ -445,8 +468,10 @@ function updateUI() {
 	clearActive();
 	// folders are done by setFolders()
 	// filters
+	document.getElementById("searchfilter").value = model.blacklist ? model.searchfilter.join("\n") : "";
 	document.getElementById("blacklist").value = model.blacklist ? model.blacklist.join("\n") : "";
 	document.getElementById("blockfilter").value = model.blockfilter ? model.blockfilter.join("\n") : "";
+	autoGrowTextArea(document.getElementById("searchfilter"));
 	autoGrowTextArea(document.getElementById("blockfilter"));
 	autoGrowTextArea(document.getElementById("blacklist"));
 	// mode
@@ -587,11 +612,14 @@ function autoGrowTextArea(element){
 }
 function cleanArray(oldArray) {
   var newArray = new Array();
-  for (var i = 0; i < oldArray.length; i++) {
-    if (oldArray[i]) {
-      newArray.push(oldArray[i]);
-    }
-  }
+  //console.log(oldArray);
+  if (oldArray) {
+	  for (var i = 0; i < oldArray.length; i++) {
+	    if (oldArray[i]) {
+	      newArray.push(oldArray[i]);
+	    }
+	  }
+	}
   return newArray;
 }
 function rantInt(max){
@@ -661,20 +689,22 @@ function saveSession() {
 }
 function saveFile() {
 	if(!appsettings.lastsave){
-		dialog.showSaveDialog({
-			title:"Save Session",
-			defaultpath: model.folders[0],
-			filters:[{name: 'json', extensions:['json']}]
-		}, function(path) {
-			appsettings.lastsave = path;
-			saveSettings();
-			saveSessionFile();
-			
-		});
+		saveAs();
 	}
 	else {
 		saveSessionFile();
 	}
+}
+function saveAs() {
+	dialog.showSaveDialog({
+		title:"Save Session",
+		defaultpath: model.folders[0],
+		filters:[{name: 'json', extensions:['json']}]
+	}, function(path) {
+		appsettings.lastsave = path;
+		saveSettings();
+		saveSessionFile();
+	});
 }
 function saveSessionFile() {
 	if (appsettings.lastsave) {
