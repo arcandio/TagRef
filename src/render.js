@@ -94,6 +94,13 @@ function setMode(m) {
     updateUI();
 }
 
+function showAbout() {
+	togglePage("about");
+}
+function showData() {
+	togglePage("data");
+}
+
 /* Mode Options */
 
 function setLengthPerImage(element) {
@@ -280,14 +287,6 @@ function doEvent(reverse) {
 	if (state.eventindex < 0) {
 		state.eventindex = 0
 	}
-	// if it's greater than the max, the session is complete.
-	else if (state.eventindex > state.events.length - 1) {
-		console.log(state.eventindex);
-		// session's complete. Show the completed screen
-		document.getElementById("all-done").style.display = "block";
-		clearInterval(state.timer);
-		//state.timer = 0;
-	}
 	else {
 		// hide the completed screen
 		document.getElementById("all-done").style.display = "none";
@@ -313,7 +312,6 @@ function startTimer(remaining) {
 		state.timer = null;
 	}*/
 	state.timer = setInterval(timerTick, 1000);
-	console.log(state.timers);
 }
 function timerTick () {
 	let now = new Date().getTime();
@@ -322,6 +320,9 @@ function timerTick () {
 	let it = document.getElementById('imagetimer');
 	it.innerHTML = state.t;
 	if (state.t <= 0) {
+		if(state.t === 0 ){
+			incrementCounters();
+		}
 		// if we still have events to do, do one
 		if (state.eventindex < state.events.length - 1){
 			clearInterval(state.timer);
@@ -331,12 +332,48 @@ function timerTick () {
 		// if we DON'T have events left to do,
 		// and if there's still an active timer,
 		// turn it off
-		else if (state.timer) {
-			console.log("clearing timer #" + state.timer);
+		else {
+			// session's complete. Show the completed screen
+			document.getElementById("all-done").style.display = "block";
 			clearInterval(state.timer);
 		}
 	}
 	soundTest(state.t);
+}
+function incrementCounters(){
+	let e = state.events[state.eventindex];
+	let as = appsettings.stats;
+	as.count += 1;
+	as.seconds += e.time;
+	//as.seconds += Math.floor(Math.random() * 100000);
+	as.seconds = Math.floor(as.seconds);
+	// now. lets. MODULOOOOO
+	as.minutes += Math.floor(as.seconds / 60);
+	as.seconds = as.seconds % 60;
+	as.hours += Math.floor(as.minutes / 60);
+	as.minutes = as.minutes % 60;
+	as.days += Math.floor(as.hours / 24);
+	as.hours = as.hours % 24;
+	// check to reset our daily session count
+	let today = new Date();
+	today.setHours(0,0,0,0);
+	let lastday = new Date(as.lastday);
+	lastday.setHours(0,0,0,0);
+	console.log(today);
+	console.log(lastday);
+	if (today.valueOf() !== lastday.valueOf()) {
+		as.drawntoday = false;
+		as.lastday = todaysDate();
+	}
+	// Check if we've drawn today
+	if (!as.drawntoday) {
+		// we haven't recorded a session today
+		as.daysdrawn += 1;
+		as.drawntoday = true;
+	}
+	//console.log(as);
+	saveSettings();
+	updateStats();
 }
 function pauseTimer() {
 	state.paused = !state.paused;
@@ -350,10 +387,11 @@ function pauseTimer() {
 		state.remaining = state.timerend - now;
 		clearInterval(state.timer);
 	}
+	updateUI();
 }
-function writeLog(){
-	let f = document.getElementById("display").style.backgroundImage;
-	f = f.slice(5,-2);
+function writeLog(e){
+	let f = e.image;
+	//f = f.slice(5,-2);
 	let line = new Date();
 	line = dateformat(line, 'longTime');
 	line += " ";
@@ -362,6 +400,20 @@ function writeLog(){
 	if (state.logstream) {
 		state.logstream.write('\n' + line);
 	}
+}
+function exitSession() {
+	// clear the timer
+	clearInterval(state.timer);
+	// clear the event list
+	state.events = [];
+	state.unused = []
+	state.eventindex = -1;
+	state.timerend = new Date().getTime();
+	state.paused = false;
+	// hide the completed screen
+	document.getElementById("all-done").style.display = "none";
+	// show the setup page
+	togglePage('setup');
 }
 
 /* Toolbar */
@@ -446,6 +498,50 @@ function updateUI() {
 	else{
 		document.getElementById("pause").classList.remove("active");
 	}
+	// hide log buttons
+	if (appsettings.savelog) {
+		document.getElementById("completionLog").style.display = "inline";
+	}
+	else {
+		document.getElementById("completionLog").style.display = "none";
+	}
+	updateStats();
+}
+function updateStats(){
+	// construct stat string
+	let as = appsettings.stats;
+	let totals = as.seconds;
+	totals += as.minutes * 60;
+	totals += as.hours * 60 * 60;
+	totals += as.days * 60 * 60 * 24;
+	var tpd = totals / as.count;
+	//var d = new Date(null);
+	//d.setSeconds(tpd);
+	//tpd = d//.toISOString().substr(11, 8);
+	var ddt = totals / as.daysdrawn;
+	//d.setSeconds(ddt);
+	//ddt = d//.toISOString().substr(11, 8);
+	let str = "<h3>Your Stats</h3><div><dl>";
+	str += "<dt>Images Drawn</dt>";
+	str += "<dd>" + as.count + "</dd>";
+	str += "<dt>Time Drawn</dt>";
+	str += "<dd>";
+	str += secondsToTimeSpan(totals);
+	str += "</dd>";
+	str += "<dt>Average Time per Drawing</dt>";
+	str += "<dd>" + secondsToTimeSpan(tpd) + "</dd>";
+	str += "<dt>Days Drawn</dt>";
+	str += "<dd>" + as.daysdrawn + "</dd>"
+	str += "<dt>Average Time Spent per day Drawing</dt>";
+	str += "<dd>" + secondsToTimeSpan(ddt) + "</dd>"
+	str += "</div></dl>";
+	// get all stat elements
+	let statelements = document.getElementsByClassName('stats');
+	//console.log(statelements);
+	for (let i=0; i<statelements.length; i++){
+		let elem = statelements[i];
+		elem.innerHTML = str;
+	}
 }
 
 /* Utility */
@@ -525,7 +621,31 @@ function Timer(fn, t) {
 		t = newT;
 		return this.stop().start();
 	}
+}
+function todaysDate() {
+	let d = new Date();
+	d.setHours(0,0,0,0);
+	return d;
+}
+function secondsToTimeSpan(seconds){
+	as = {};
+	//as.seconds += seconds;
+	//as.seconds = Math.floor(Math.random() * 100000);
+	as.seconds = Math.floor(seconds);
+	// now. lets. MODULOOOOO
+	as.minutes = Math.floor(as.seconds / 60);
+	as.seconds = as.seconds % 60;
+	as.hours = Math.floor(as.minutes / 60);
+	as.minutes = as.minutes % 60;
+	as.days = Math.floor(as.hours / 24);
+	as.hours = as.hours % 24;
 
+	let span = '';
+	span += as.days ? as.days + " days, " : "";
+	span += as.hours ? as.hours + " hours, " : "";
+	span += as.minutes ? as.minutes + " minutes, " : "";
+	span += as.seconds + " seconds";
+	return span;
 }
 
 /* Data */
@@ -576,6 +696,20 @@ function loadSettings() {
 	appsettings = JSON.parse(localStorage.getItem("application settings"));
 	// set UI
 	document.getElementById("save-log").checked = appsettings.savelog;
+	// if we don't have a count, make one
+	if (!appsettings.stats) {
+		as = {};
+		as.count = 0;
+		as.lastday = todaysDate();
+		as.drawntoday = false;
+		as.daysdrawn = 0;
+		as.days = 0;
+		as.seconds = 0;
+		as.minutes = 0;
+		as.hours = 0;
+		as.days = 0;
+		appsettings.stats = as;
+	}
 }
 function setSaveLog() {
 	appsettings.savelog = document.getElementById("save-log").checked;

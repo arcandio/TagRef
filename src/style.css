@@ -11,18 +11,17 @@
 body, html {
 	margin: 0;
 	padding: 0;
+	background-color: #777777;
 }
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Anton', sans-serif;
+	font-weight: normal;
 }
 
 /* Pages */
 
 .h {
 	display: none;
-}
-html {
-	background-color: #777777;
 }
 
 /* Display Page */
@@ -51,7 +50,6 @@ html {
 	font-weight: bolder;
 	font-size: 2em;
 }
-
 .fsoverlay {
 	display: none;
 	position: fixed;
@@ -61,6 +59,34 @@ html {
 	bottom: 0;
 	width: 100vw;
 	height: 100vh;
+	background-color: #333;
+}
+.fsoverlay p {
+	text-align: center;
+	color: #ccc;
+}
+.fsoverlay dl {
+	margin-left: auto;
+	margin-right: auto;
+	display: inline-block;
+	color: #ccc;
+}
+.fsoverlay h1,
+.fsoverlay h2,
+.fsoverlay h3,
+.fsoverlay h4,
+.fsoverlay h5,
+.fsoverlay h6 {
+		color: #ccc;
+		text-align: center;
+}
+.fsoverlay .centered{
+	position: absolute;
+	width: 400px;
+	height: 50vh;
+	left: 50%;
+	margin-left: -200px;
+	top: 25vh;
 }
 
 /* Image Effects */
@@ -96,13 +122,13 @@ html {
 
 /* hide buttons */
 
-#display-page button,
+/*#display-page button,*/
 #display-toolbar,
 #display-page input
 {
 	visibility: hidden;
 }
-html:hover #display-page button,
+/*html:hover #display-page button,*/
 html:hover #display-toolbar,
 html:hover #display-page input
 {
@@ -146,6 +172,8 @@ html:hover #display-page input
 #settings {
 	height: 65vh;
 	width: 100%;
+}
+.panel > div {
 	padding-left: 1em;
 	padding-right: 1em;
 	overflow-y: auto;
@@ -162,9 +190,6 @@ h1 {
 	text-align: center;
 	margin-bottom: 0;
 	margin-top: 0;
-}
-.active {
-	background-color: #9f9;
 }
 #mode-settings div.active {
 	background-color: transparent;
@@ -198,13 +223,32 @@ textarea, input[type="number"] {
 button {
 	border: 1px outset;
 	text-shadow: 0 1px 0 rgba(255,255,255,.7);
-	box-shadow: 1px 1px 1px rgba(0,0,0,.1);
+	box-shadow: 1px 1px 1px rgba(0,0,0,.2);
 }
 button:hover {
 	background-color: #ccc;
-	box-shadow: 2px 2px 1px rgba(0,0,0,.1);
+	box-shadow: 2px 2px 1px rgba(0,0,0,.2);
 }
-button:active {
+button:active, button.active {
 	border-style: inset;
-	box-shadow: 2px 2px 1px rgba(0,0,0,.1) inset;
+	background-color: #888;
+	box-shadow: 2px 2px 1px rgba(0,0,0,.2) inset;
+	text-shadow: 0 1px 0 rgba(255,255,255,.3);
 }
+button:hover.active {
+	background-color: #999;
+}
+.startbutton {
+	display: block;
+	font-size: larger;
+	margin-bottom: 1em;
+	width: 100%;
+}
+/*
+.active {
+	background-color: #ccf;
+}
+.active:hover {
+	background-color: #ccd;
+}
+*/
