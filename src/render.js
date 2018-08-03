@@ -146,9 +146,10 @@ function setLengthPerImage(element) {
 	else if (b.endsWith("m")) {
 		seconds = parseFloat(b.replace("m", ""))*60;
 	}
-	console.log(seconds);
+	//console.log(seconds);
 	model.fixed.seconds = seconds;
 	model.fixed.iscustomtime = false;
+	calcFixedTime();
 	saveSession();
 	updateUI();
 }
@@ -157,12 +158,14 @@ function setCustomLength() {
 	model.fixed.seconds = seconds;
 	model.fixed.iscustomtime = true;
 	//console.log(document.getElementById("fixed-custom-time").value);
+	calcFixedTime();
 	saveSession();
 	updateUI();
 }
 function setFixedNumber(element){
 	//console.log(element.value);
 	model.fixed.number = element.value;
+	calcFixedTime();
 	saveSession();
 	updateUI();
 }
@@ -170,9 +173,22 @@ function setFixedOptions(){
 	model.fixed.fliphr = document.getElementById("flip-h-r").checked;
 	model.fixed.flipvr = document.getElementById("flip-v-r").checked;
 	model.fixed.grayscale = document.getElementById("black-and-white").checked;
+	calcFixedTime();
 	saveSession();
 	updateUI();
 }
+function calcFixedTime () {
+	model.fixed.totaltime = parseFloat(model.fixed.number) * parseFloat(model.fixed.seconds);
+}
+/* Class Mode */
+
+function calcClassTime() {
+	
+}
+
+/* Free mode */
+
+
 
 /* Strucured Mode */
 
@@ -187,7 +203,7 @@ function setStructuredEvents() {
 		let e = new ev();
 		// construct an EV object from the data
 		e.count = row.querySelector("td.number input").value;
-		e.time = row.querySelector("td.time input").value;
+		e.time = row.querySelector("td.time input").value * 60;
 		e.isbreak = row.querySelector("td.break input").checked;
 		e.breakmessage = row.querySelector("td.message input").value;
 		e.fliph = row.querySelector("td.fliph input").checked;
@@ -197,9 +213,16 @@ function setStructuredEvents() {
 		// add that EV object to the list
 		model.structured.events.push(e)
 	}
+	calcStructuredTime();
 	//save the model
 	saveSession();
 	updateUI();
+}
+function calcStructuredTime() {
+	model.structured.totaltime = 0;
+	model.structured.events.forEach(function(e){
+		model.structured.totaltime += parseFloat(e.time);
+	});
 }
 function setRowPrototype () {
 	state.rowPrototype = document.querySelector("#structured-settings table tr:nth-child(2)").cloneNode(true);
@@ -215,23 +238,6 @@ function removeRow(elem){
 	let table = row.parentElement;
 	table.removeChild(row);
 }
-/*
-// couldn't get this to work.
-// See https://github.com/arcandio/TagRef/issues/9
-function moveOneRow(elem, down){
-	let row = elem.parentElement.parentElement;
-	let table = row.parentElement;
-	let rows = table.getElementsByTagName("tr");
-	let above = row.previousSibling;
-	let below = row.nextSibling;
-	if(down){
-		table.insertBefore(row, below);
-	}
-	else {
-		table.insertBefore(row, above);
-	}
-}
-*/
 
 /* Display */
 
@@ -280,8 +286,8 @@ function soundTest(t){
 }
 class ev {
 	constructor (time, count, istimed, image, fliph, flipv, grayscale, isbreak, breakmessage) {
-		this.time = time;
-		this.count = count;
+		this.time = parseFloat(time);
+		this.count = parseInt(count);
 		this.istimed = istimed;
 		this.image = image;
 		this.fliph = fliph ? Math.round(Math.random()*2) - 1 : false;
@@ -579,13 +585,18 @@ function updateUI() {
 		let r = rows[i];
 		// apply settings
 		r.querySelector("td.number input").value = e.count;
-		r.querySelector("td.time input").value = e.time;
+		r.querySelector("td.time input").value = e.time / 60;
 		r.querySelector("td.break input").checked = e.isbreak;
 		r.querySelector("td.message input").value = e.breakmessage;
 		r.querySelector("td.fliph input").checked = e.fliph;
 		r.querySelector("td.flipv input").checked = e.flipv;
 		r.querySelector("td.gray input").checked = e.grayscale;
 	}
+	// update Time
+	document.querySelector("#fixed-settings .totaltime").innerHTML=secondsToTimeSpan(model.fixed.totaltime);
+	document.querySelector("#class-settings .totaltime").innerHTML=secondsToTimeSpan(model.class.totaltime);
+	document.querySelector("#structured-settings .totaltime").innerHTML=secondsToTimeSpan(model.structured.totaltime);
+
 	// Toolbars
 	// volume
 	if(!appsettings.volume){
@@ -762,7 +773,7 @@ function secondsToTimeSpan(seconds){
 	span += as.days ? as.days + " days, " : "";
 	span += as.hours ? as.hours + " hours, " : "";
 	span += as.minutes ? as.minutes + " minutes, " : "";
-	span += as.seconds + " seconds";
+	span += as.seconds ? as.seconds + " seconds" : "";
 	return span;
 }
 
@@ -806,7 +817,11 @@ function saveSessionFile() {
 }
 function loadSession() {
 	model = JSON.parse(localStorage.getItem("session settings"));
+	// setup stuff
 	setFolders(model.folders);
+	calcFixedTime();
+	calcClassTime();
+	calcStructuredTime();
 	updateUI();
 }
 function saveSettings() {
