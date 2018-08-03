@@ -92,7 +92,7 @@ function removeFiles(files) {
 	state.files = unblocked;
 	// file count
 	document.getElementById("filecount").innerHTML = state.files ? state.files.length : 0;
-	console.log(state.files.length);
+	//console.log(state.files.length);
 }
 function setFilters() {
 	// get from UI
@@ -174,6 +174,64 @@ function setFixedOptions(){
 	updateUI();
 }
 
+/* Strucured Mode */
+
+function setStructuredEvents() {
+	// get the table
+	let table = document.querySelector("#structured-settings table");
+	// iterate through each row
+	let rows = table.getElementsByTagName("tr");
+	model.structured.events = [];
+	for (let i=1; i<rows.length; i++){
+		let row = rows[i];
+		let e = new ev();
+		// construct an EV object from the data
+		e.count = row.querySelector("td.number input").value;
+		e.time = row.querySelector("td.time input").value;
+		e.isbreak = row.querySelector("td.break input").checked;
+		e.breakmessage = row.querySelector("td.message input").value;
+		e.fliph = row.querySelector("td.fliph input").checked;
+		e.flipv = row.querySelector("td.flipv input").checked;
+		e.grayscale = row.querySelector("td.gray input").checked;
+		e.istimed = true;
+		// add that EV object to the list
+		model.structured.events.push(e)
+	}
+	//save the model
+	saveSession();
+	updateUI();
+}
+function setRowPrototype () {
+	state.rowPrototype = document.querySelector("#structured-settings table tr:nth-child(2)").cloneNode(true);
+	//console.log(state.rowPrototype);
+}
+function appendNewRow() {
+	let newrow = 
+	document.querySelector("#structured-settings table").appendChild(state.rowPrototype.cloneNode(true));
+}
+function removeRow(elem){
+	let row = elem.parentElement.parentElement;
+	let table = row.parentElement;
+	table.removeChild(row);
+}
+/*
+// couldn't get this to work.
+// See https://github.com/arcandio/TagRef/issues/9
+function moveOneRow(elem, down){
+	let row = elem.parentElement.parentElement;
+	let table = row.parentElement;
+	let rows = table.getElementsByTagName("tr");
+	let above = row.previousSibling;
+	let below = row.nextSibling;
+	if(down){
+		table.insertBefore(row, below);
+	}
+	else {
+		table.insertBefore(row, above);
+	}
+}
+*/
+
 /* Display */
 
 function startNewSession () {
@@ -220,8 +278,9 @@ function soundTest(t){
 	}
 }
 class ev {
-	constructor (time, istimed, image, fliph, flipv, grayscale, isbreak, breakmessage) {
+	constructor (time, count, istimed, image, fliph, flipv, grayscale, isbreak, breakmessage) {
 		this.time = time;
+		this.count = count;
 		this.istimed = istimed;
 		this.image = image;
 		this.fliph = fliph ? Math.round(Math.random()*2) - 1 : false;
@@ -244,6 +303,7 @@ function buildEventList() {
 			for (let i=0; i<model.fixed.number; i++){
 				let e = new ev(
 					model.fixed.seconds,
+					1,
 					true,
 					selectImage(),
 					model.fixed.fliphr,
@@ -382,8 +442,8 @@ function incrementCounters(){
 	today.setHours(0,0,0,0);
 	let lastday = new Date(as.lastday);
 	lastday.setHours(0,0,0,0);
-	console.log(today);
-	console.log(lastday);
+	//console.log(today);
+	//console.log(lastday);
 	if (today.valueOf() !== lastday.valueOf()) {
 		as.drawntoday = false;
 		as.lastday = todaysDate();
@@ -496,6 +556,8 @@ function updateUI() {
 	document.getElementById("flip-h-r").checked = model.fixed.fliphr;
 	document.getElementById("flip-v-r").checked = model.fixed.flipvr;
 	document.getElementById("black-and-white").checked = model.fixed.grayscale;
+	// structured options
+	//todo
 	// Toolbars
 	// volume
 	if(!appsettings.volume){
@@ -765,6 +827,7 @@ function setUpLogStream() {
 }
 // load app settings on reload
 document.addEventListener("DOMContentLoaded", function(event) { 
+	setRowPrototype();
 	clearActive();
 	loadSettings();
 	loadSession();

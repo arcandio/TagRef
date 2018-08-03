@@ -56,12 +56,41 @@
 						</div>
 						<div id="class-settings">
 							class
+							Gesture Drawing
+							Figure Drawing
+							Value Drawing
 						</div>
 						<div id="free-settings">
 							free
 						</div>
 						<div id="structured-settings">
-							structured
+							<table>
+								<tr>
+									<th>Images</th>
+									<th>Time(m)</th>
+									<th>Break?</th>
+									<th>Message</th>
+									<th>Flip H</th>
+									<th>Flip V</th>
+									<th>Gray&#8203;scale</th>
+									<th>Options</th>
+								</tr>
+								<tr>
+									<td class="number"><input type="number" min="1" onchange="setStructuredEvents()" value="1"></td>
+									<td class="time"><input type="number" min="1" onchange="setStructuredEvents()" value="1"></td>
+									<td class="break"><input type="checkbox" onchange="setStructuredEvents()"></td>
+									<td class="message"><input type="text" onchange="setStructuredEvents()"></td>
+									<td class="fliph"><input type="checkbox" onchange="setStructuredEvents()"></td>
+									<td class="flipv"><input type="checkbox" onchange="setStructuredEvents()"></td>
+									<td class="gray"><input type="checkbox" onchange="setStructuredEvents()"></td>
+									<td>
+										<button onclick="removeRow(this)">-</button>
+										<!--<button onclick="moveOneRow(this)">&uarr;</button>
+										<button onclick="moveOneRow(this, true)">&darr;</button>-->
+									</td>
+								</tr>
+							</table>
+							<button onclick="appendNewRow()">Add New</button>
 						</div>
 					</div>
 					<hr>
