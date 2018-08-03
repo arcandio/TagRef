@@ -204,6 +204,7 @@ function setStructuredEvents() {
 function setRowPrototype () {
 	state.rowPrototype = document.querySelector("#structured-settings table tr:nth-child(2)").cloneNode(true);
 	//console.log(state.rowPrototype);
+	document.querySelector("#structured-settings table tr:nth-child(2)").remove();
 }
 function appendNewRow() {
 	let newrow = 
@@ -557,7 +558,34 @@ function updateUI() {
 	document.getElementById("flip-v-r").checked = model.fixed.flipvr;
 	document.getElementById("black-and-white").checked = model.fixed.grayscale;
 	// structured options
-	//todo
+	let table = document.querySelector("#structured-settings table");
+	let rows = table.querySelectorAll(".repeatable");
+	// remove old elements
+	// resize table
+	while (rows.length !== model.structured.events.length) {
+		if(rows.length > model.structured.events.length){
+			rows[rows.length-1].remove();
+			rows = table.querySelectorAll(".repeatable");
+		}
+		else {
+			table.appendChild(state.rowPrototype.cloneNode(true));
+			rows = table.querySelectorAll(".repeatable");
+		}
+	}
+	// apply events
+	//console.log(model.structured.events)
+	for (let i=0; i<model.structured.events.length; i++){
+		let e = model.structured.events[i];
+		let r = rows[i];
+		// apply settings
+		r.querySelector("td.number input").value = e.count;
+		r.querySelector("td.time input").value = e.time;
+		r.querySelector("td.break input").checked = e.isbreak;
+		r.querySelector("td.message input").value = e.breakmessage;
+		r.querySelector("td.fliph input").checked = e.fliph;
+		r.querySelector("td.flipv input").checked = e.flipv;
+		r.querySelector("td.gray input").checked = e.grayscale;
+	}
 	// Toolbars
 	// volume
 	if(!appsettings.volume){

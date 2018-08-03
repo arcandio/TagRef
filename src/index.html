@@ -65,7 +65,7 @@
 						</div>
 						<div id="structured-settings">
 							<table>
-								<tr>
+								<tr class="tablehead">
 									<th>Images</th>
 									<th>Time(m)</th>
 									<th>Break?</th>
@@ -73,9 +73,9 @@
 									<th>Flip H</th>
 									<th>Flip V</th>
 									<th>Gray&#8203;scale</th>
-									<th>Options</th>
+									<th>X</th>
 								</tr>
-								<tr>
+								<tr class="repeatable">
 									<td class="number"><input type="number" min="1" onchange="setStructuredEvents()" value="1"></td>
 									<td class="time"><input type="number" min="1" onchange="setStructuredEvents()" value="1"></td>
 									<td class="break"><input type="checkbox" onchange="setStructuredEvents()"></td>
@@ -84,7 +84,7 @@
 									<td class="flipv"><input type="checkbox" onchange="setStructuredEvents()"></td>
 									<td class="gray"><input type="checkbox" onchange="setStructuredEvents()"></td>
 									<td>
-										<button onclick="removeRow(this)">-</button>
+										<button onclick="removeRow(this)" title="remove this element" class="delete">X</button>
 										<!--<button onclick="moveOneRow(this)">&uarr;</button>
 										<button onclick="moveOneRow(this, true)">&darr;</button>-->
 									</td>

@@ -261,8 +261,14 @@ tr {
 	border: 1px outset;
 	background-color: #aaa;
 }
+tr:hover{
+	background-color: #bbb;
+}
 table input {
 	width: 50px;
+}
+td button.delete:hover {
+	background-color: #f99;
 }
 td input[type="checkbox"]{
 	/*-webkit-appearance:none;
