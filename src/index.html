@@ -99,12 +99,12 @@
 					</div>
 					<hr>
 					<p><strong>Options</strong></p>
-					<input type="checkbox" id="save-log" onchange="setSaveLog()">
+					<input type="checkbox" id="save-log" onchange="data.setSaveLog()">
 					<label for="save-log">Save drawing log</label>
 					<br>
 					<label for="vsetting">Volume </label>
-					<input type="range" class="volume" min="0" max="1" value=".5" step=".1" id="vsetting" onchange="setVolume(this)">
-					<button onclick="mute()" id="mutest">Mute</button>
+					<input type="range" class="volume" min="0" max="1" value=".5" step=".1" id="vsetting" onchange="display.setVolume(this)">
+					<button onclick="display.mute()" id="mutest">Mute</button>
 					<hr>
 					<button onclick="display.startNewSession()" class="startbutton">Start Session</button>
 					<button onclick="data.saveAs()" title="once saved, your session will be automatically saved on change.">Save Session File</button>

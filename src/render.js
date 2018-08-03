@@ -28,6 +28,20 @@ state.timers = [];
 let bip = new Audio('assets/bip.wav');
 let beep = new Audio('assets/beeem.wav');
 
+class ev {
+	constructor (time, count, istimed, image, fliph, flipv, grayscale, isbreak, breakmessage) {
+		this.time = parseFloat(time);
+		this.count = parseInt(count);
+		this.istimed = istimed;
+		this.image = image;
+		this.fliph = fliph ? Math.round(Math.random()*2) - 1 : false;
+		this.flipv = flipv ? Math.round(Math.random()*2) - 1 : false;
+		this.grayscale = grayscale;
+		this.isbreak = isbreak;
+		this.breakmessage = breakmessage;
+	}
+}
+
 // load app settings on reload
 document.addEventListener("DOMContentLoaded", function(event) { 
 	mode.setRowPrototype();

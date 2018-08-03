@@ -11,7 +11,7 @@ exports.togglePage = function (page) {
 
 exports.startNewSession = function  () {
 	// setup log
-	setUpLogStream();
+	data.setUpLogStream();
 	// setup event list
 	buildEventList();
 	// start display
@@ -52,19 +52,6 @@ exports.soundTest = function (t){
 		beep.play();
 	}
 }
-class ev {
-	constructor (time, count, istimed, image, fliph, flipv, grayscale, isbreak, breakmessage) {
-		this.time = parseFloat(time);
-		this.count = parseInt(count);
-		this.istimed = istimed;
-		this.image = image;
-		this.fliph = fliph ? Math.round(Math.random()*2) - 1 : false;
-		this.flipv = flipv ? Math.round(Math.random()*2) - 1 : false;
-		this.grayscale = grayscale;
-		this.isbreak = isbreak;
-		this.breakmessage = breakmessage;
-	}
-}
 function buildEventList () {
 	state.events = [];
 	state.unused = state.files.slice();
@@ -95,6 +82,23 @@ function buildEventList () {
 		case "free":
 			break;
 		case "structured":
+			for (let i=0; i<model.structured.events.length; i++){
+				let s = model.structured.events[i];
+				for (let n=0; n<s.count; n++){
+					let e = new ev(
+						s.time,
+						1,
+						true,
+						selectImage(),
+						s.fliphr,
+						s.flipvr,
+						s.grayscale,
+						s.isbreak,
+						s.breakmessage
+						);
+					state.events.push(e);
+				}
+			}
 			break;
 	}
 	//console.log(state.events);
@@ -103,7 +107,7 @@ function selectImage () {
 	// randomly pick an image from state.files
 	// If we've used up all our files, refil our unused files
 	if (state.unused.length < 1){
-		state.unused = state.files;
+		state.unused = state.files.slice();
 	}
 	// range
 	let max = state.unused.length;
@@ -154,6 +158,7 @@ exports.doEvent = function (reverse) {
 		exports.showImage(e);
 		// setup countdown
 		if (e.istimed){
+			//console.log(e)
 			exports.startTimer(e.time);
 		}
 	}
@@ -199,39 +204,41 @@ exports.timerTick = function  () {
 	exports.soundTest(state.t);
 }
 exports.incrementCounters = function (){
-	let e = state.events[state.eventindex];
-	let as = appsettings.stats;
-	as.count += 1;
-	as.seconds += e.time;
-	//as.seconds += Math.floor(Math.random() * 100000);
-	as.seconds = Math.floor(as.seconds);
-	// now. lets. MODULOOOOO
-	as.minutes += Math.floor(as.seconds / 60);
-	as.seconds = as.seconds % 60;
-	as.hours += Math.floor(as.minutes / 60);
-	as.minutes = as.minutes % 60;
-	as.days += Math.floor(as.hours / 24);
-	as.hours = as.hours % 24;
-	// check to reset our daily session count
-	let today = new Date();
-	today.setHours(0,0,0,0);
-	let lastday = new Date(as.lastday);
-	lastday.setHours(0,0,0,0);
-	//console.log(today);
-	//console.log(lastday);
-	if (today.valueOf() !== lastday.valueOf()) {
-		as.drawntoday = false;
-		as.lastday = todaysDate();
+	if (state.events.length) {
+		let e = state.events[state.eventindex];
+		let as = appsettings.stats;
+		as.count += 1;
+		as.seconds += e.time;
+		//as.seconds += Math.floor(Math.random() * 100000);
+		as.seconds = Math.floor(as.seconds);
+		// now. lets. MODULOOOOO
+		as.minutes += Math.floor(as.seconds / 60);
+		as.seconds = as.seconds % 60;
+		as.hours += Math.floor(as.minutes / 60);
+		as.minutes = as.minutes % 60;
+		as.days += Math.floor(as.hours / 24);
+		as.hours = as.hours % 24;
+		// check to reset our daily session count
+		let today = new Date();
+		today.setHours(0,0,0,0);
+		let lastday = new Date(as.lastday);
+		lastday.setHours(0,0,0,0);
+		//console.log(today);
+		//console.log(lastday);
+		if (today.valueOf() !== lastday.valueOf()) {
+			as.drawntoday = false;
+			as.lastday = todaysDate();
+		}
+		// Check if we've drawn today
+		if (!as.drawntoday) {
+			// we haven't recorded a session today
+			as.daysdrawn += 1;
+			as.drawntoday = true;
+		}
+		//console.log(as);
+		data.saveSettings();
+		ui.updateStats();
 	}
-	// Check if we've drawn today
-	if (!as.drawntoday) {
-		// we haven't recorded a session today
-		as.daysdrawn += 1;
-		as.drawntoday = true;
-	}
-	//console.log(as);
-	saveSettings();
-	updateStats();
 }
 exports.pauseTimer = function () {
 	state.paused = !state.paused;
@@ -278,13 +285,13 @@ exports.exitSession = function () {
 
 exports.mute = function(){
 	appsettings.muted = !appsettings.muted;
-	saveSettings();
-	updateUI()
+	data.saveSettings();
+	ui.updateUI()
 }
 exports.setVolume = function(elem){
 	appsettings.volume = elem.value;
-	saveSettings();
-	updateUI();
+	data.saveSettings();
+	ui.updateUI();
 }
 exports.openLog = function(){
 	shell.openItem(state.logstream.path);

@@ -32,10 +32,10 @@ exports.setLengthPerImage = function (element) {
 		seconds = parseFloat(document.getElementById("fixed-custom-time").value)*60;
 	}
 	else if (b.endsWith("s")) {
-		seconds = parseFloat(b.replace("s",""));
+		seconds = parseFloat(b.replace("s","")) * 1;
 	}
 	else if (b.endsWith("m")) {
-		seconds = parseFloat(b.replace("m", ""))*60;
+		seconds = parseFloat(b.replace("m", "")) * 60;
 	}
 	//console.log(seconds);
 	model.fixed.seconds = seconds;
@@ -55,7 +55,7 @@ exports.setCustomLength = function () {
 }
 exports.setFixedNumber = function (element){
 	//console.log(element.value);
-	model.fixed.number = element.value;
+	model.fixed.number = parseInt(element.value);
 	exports.calcFixedTime();
 	data.saveSession();
 	ui.updateUI();
@@ -93,7 +93,7 @@ exports.setStructuredEvents = function () {
 		let row = rows[i];
 		let e = new ev();
 		// construct an EV object from the data
-		e.count = row.querySelector("td.number input").value;
+		e.count = row.querySelector("td.number input").value * 1;
 		e.time = row.querySelector("td.time input").value * 60;
 		e.isbreak = row.querySelector("td.break input").checked;
 		e.breakmessage = row.querySelector("td.message input").value;

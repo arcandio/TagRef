@@ -52,7 +52,9 @@ exports.cleanArray = function (oldArray) {
   return newArray;
 }
 exports.randInt = function (max){
-	return Math.floor(Math.random() * Math.floor(max));
+	let out = Math.floor(Math.random() * Math.floor(max));
+	//console.log("(0--" + max + ") = " + out);
+	return out;
 }
 exports.clamp = function (num, min, max) {
   return num <= min ? min : num >= max ? max : num;
