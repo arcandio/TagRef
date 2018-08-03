@@ -40,6 +40,24 @@ exports.updateUI = function () {
 	document.getElementById("flip-h-r").checked = model.fixed.fliphr;
 	document.getElementById("flip-v-r").checked = model.fixed.flipvr;
 	document.getElementById("black-and-white").checked = model.fixed.grayscale;
+	// class options
+	let classes = document.querySelectorAll(".classselect");
+	let classname = model.class.classtype;
+	classname = util.makeId(classname);
+	//console.log(classes);
+	for (let i=0; i<classes.length; i++){
+		let c = classes[i];
+		//c.classList.remove('active');
+		console.log(c.id);
+		console.log(classname);
+		// MAGIC ALERT. I have NO IDEA why I need trim the ID in order for it to match the classname. IDs aren't supposed to contain any spaces.
+		if(c.id.trim() === classname){
+			c.classList.add('active');
+		}
+		else {
+			c.classList.remove('active')
+		}
+	}
 	// structured options
 	let table = document.querySelector("#structured-settings table");
 	let rows = table.querySelectorAll(".repeatable");
@@ -71,7 +89,7 @@ exports.updateUI = function () {
 	}
 	// update Time
 	document.querySelector("#fixed-settings .totaltime").innerHTML=util.secondsToTimeSpan(model.fixed.totaltime);
-	document.querySelector("#class-settings .totaltime").innerHTML=util.secondsToTimeSpan(model.class.totaltime);
+	//document.querySelector("#class-settings .totaltime").innerHTML=util.secondsToTimeSpan(model.class.totaltime);
 	document.querySelector("#structured-settings .totaltime").innerHTML=util.secondsToTimeSpan(model.structured.totaltime);
 
 	// Toolbars

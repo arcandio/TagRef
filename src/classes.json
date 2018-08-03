@@ -1,0 +1,227 @@
+{
+  "Figure Drawing": {
+    "description": "1 hour, starting with 30s gesture drawings and ending with some 14 minute drawings. Breaks between each section.",
+    "events": [
+      {
+        "breakmessage": "Warmup",
+        "count": 8,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 30
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 10,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 30
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 2,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 600
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 2,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 840
+      }
+    ]
+  },
+  "Gesture Drawing": {
+    "description": "1 hour of short drawings ranging from 30 seconds to 2 minutes, with breaks every 11 images.",
+    "events": [
+      {
+        "breakmessage": "",
+        "count": 11,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 30
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 11,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 30
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 11,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 11,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 120
+      },
+      {
+        "breakmessage": "",
+        "count": 11,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 120
+      }
+    ]
+  },
+  "Value Studies": {
+    "description": "1 hour, starting with gesture warmups, but broken down into larger increments for value studies.",
+    "events": [
+      {
+        "breakmessage": "",
+        "count": 10,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 30
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 2,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 900
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": false,
+        "isbreak": true,
+        "istimed": true,
+        "time": 60
+      },
+      {
+        "breakmessage": "",
+        "count": 1,
+        "fliph": false,
+        "flipv": false,
+        "grayscale": true,
+        "isbreak": false,
+        "istimed": true,
+        "time": 1380
+      }
+    ]
+  }
+}

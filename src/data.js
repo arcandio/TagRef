@@ -41,7 +41,7 @@ exports.loadSession = function () {
 	// setup stuff
 	fl.setFolders(model.folders);
 	mode.calcFixedTime();
-	mode.calcClassTime();
+	//mode.calcClassTime();
 	mode.calcStructuredTime();
 	ui.updateUI();
 }

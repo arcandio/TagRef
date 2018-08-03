@@ -149,7 +149,7 @@ html:hover #display-page input
 }
 
 /* Settings Page */
-#mode-settings div {
+#mode-settings > div {
 	display: none;
 }
 #mode-settings div.active {
@@ -203,6 +203,10 @@ h1 {
 }
 #fixed-custom-time:after {
 	content: "m";
+}
+button.classselect {
+	display: block;
+	width: 100%;
 }
 
 /* stylin */
@@ -280,4 +284,12 @@ td input[type="checkbox"]{
 	padding: 0;
 	display: block;
 	content: ".";*/
+}
+.classblock {
+	background-color: #aaa;
+	padding: 5px;
+	margin-bottom: 1em;
+}
+.classblock:hover {
+	background-color: #bbb;
 }

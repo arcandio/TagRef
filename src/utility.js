@@ -106,3 +106,17 @@ exports.secondsToTimeSpan = function (seconds){
 	span += as.seconds ? as.seconds + " seconds" : "";
 	return span;
 }
+exports.sumKey = function(array, key){
+	let out = 0;
+	if(array && array.length && key){
+		for (let k in array){
+			let obj = array[k];
+			//console.log(obj);
+			out += obj[key];
+		}
+	}
+	return out;
+}
+exports.makeId = function (string) {
+	return string.replace(" ", "_")
+}

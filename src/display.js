@@ -162,7 +162,6 @@ exports.doEvent = function (reverse) {
 			exports.startTimer(e.time);
 		}
 	}
-
 }
 exports.startTimer = function (remaining) {
 	state.timerend = new Date().getTime() + remaining * 1000;
@@ -206,38 +205,40 @@ exports.timerTick = function  () {
 exports.incrementCounters = function (){
 	if (state.events.length) {
 		let e = state.events[state.eventindex];
-		let as = appsettings.stats;
-		as.count += 1;
-		as.seconds += e.time;
-		//as.seconds += Math.floor(Math.random() * 100000);
-		as.seconds = Math.floor(as.seconds);
-		// now. lets. MODULOOOOO
-		as.minutes += Math.floor(as.seconds / 60);
-		as.seconds = as.seconds % 60;
-		as.hours += Math.floor(as.minutes / 60);
-		as.minutes = as.minutes % 60;
-		as.days += Math.floor(as.hours / 24);
-		as.hours = as.hours % 24;
-		// check to reset our daily session count
-		let today = new Date();
-		today.setHours(0,0,0,0);
-		let lastday = new Date(as.lastday);
-		lastday.setHours(0,0,0,0);
-		//console.log(today);
-		//console.log(lastday);
-		if (today.valueOf() !== lastday.valueOf()) {
-			as.drawntoday = false;
-			as.lastday = todaysDate();
+		if (!e.isbreak){
+			let as = appsettings.stats;
+			as.count += 1;
+			as.seconds += e.time;
+			//as.seconds += Math.floor(Math.random() * 100000);
+			as.seconds = Math.floor(as.seconds);
+			// now. lets. MODULOOOOO
+			as.minutes += Math.floor(as.seconds / 60);
+			as.seconds = as.seconds % 60;
+			as.hours += Math.floor(as.minutes / 60);
+			as.minutes = as.minutes % 60;
+			as.days += Math.floor(as.hours / 24);
+			as.hours = as.hours % 24;
+			// check to reset our daily session count
+			let today = new Date();
+			today.setHours(0,0,0,0);
+			let lastday = new Date(as.lastday);
+			lastday.setHours(0,0,0,0);
+			//console.log(today);
+			//console.log(lastday);
+			if (today.valueOf() !== lastday.valueOf()) {
+				as.drawntoday = false;
+				as.lastday = todaysDate();
+			}
+			// Check if we've drawn today
+			if (!as.drawntoday) {
+				// we haven't recorded a session today
+				as.daysdrawn += 1;
+				as.drawntoday = true;
+			}
+			//console.log(as);
+			data.saveSettings();
+			ui.updateStats();
 		}
-		// Check if we've drawn today
-		if (!as.drawntoday) {
-			// we haven't recorded a session today
-			as.daysdrawn += 1;
-			as.drawntoday = true;
-		}
-		//console.log(as);
-		data.saveSettings();
-		ui.updateStats();
 	}
 }
 exports.pauseTimer = function () {

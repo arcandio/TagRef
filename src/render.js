@@ -14,6 +14,7 @@ const ui = require("./ui.js");
 const display = require("./display.js");
 const util = require("./utility.js");
 const data = require("./data.js");
+const classes = require("./classes.json");
 
 // globals
 let appsettings = {};
@@ -45,6 +46,7 @@ class ev {
 // load app settings on reload
 document.addEventListener("DOMContentLoaded", function(event) { 
 	mode.setRowPrototype();
+	mode.buildClassOptions();
 	ui.clearActive();
 	data.loadSettings();
 	data.loadSession();

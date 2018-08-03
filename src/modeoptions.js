@@ -73,10 +73,48 @@ exports.calcFixedTime = function  () {
 }
 /* Class Mode */
 
+exports.buildClassOptions = function () {
+	// get the settings box
+	let box = document.querySelector("#class-settings div");
+	// object keys
+	let keys = Object.keys(classes);
+	//console.log(keys)
+	// construct content
+	let content = '';
+	for(let i=0; i<keys.length; i++){
+		let classname = keys[i];
+		let co = classes[classname];
+		//console.log(co);
+		content += "<div class='classblock'>";
+		content += "<button class='classselect' ";
+		content += " onclick='mode.selectClass(this)' ";
+		content += " id=' " + util.makeId(classname) + "' ";
+		content += " >";
+		content += classname;
+		content += "</button>";
+		content += "\n";
+		content += "<p>" + co.description + "</p>";
+		content += "<p>Drawings: ";
+		content += util.sumKey(co.events, "count");
+		content += ", Breaks: ";
+		content += util.sumKey(co.events, "isbreak");
+		content += "</p>";
+		content += "</div>";
+	}
+	box.innerHTML = content;
+}
+exports.selectClass = function(elem){
+	let classtype = elem.innerHTML;
+	console.log()
+	model.class.classtype = elem.innerHTML;
+	data.saveSession();
+	ui.updateUI();
+}
+/*
 exports.calcClassTime = function () {
 
 }
-
+*/
 /* Free mode */
 
 
@@ -112,7 +150,7 @@ exports.setStructuredEvents = function () {
 exports.calcStructuredTime = function () {
 	model.structured.totaltime = 0;
 	model.structured.events.forEach(function(e){
-		model.structured.totaltime += parseFloat(e.time);
+		model.structured.totaltime += parseFloat(e.time) * parseFloat(e.count);
 	});
 }
 exports.setRowPrototype = function  () {
@@ -123,9 +161,15 @@ exports.setRowPrototype = function  () {
 exports.appendNewRow = function () {
 	let newrow = 
 	document.querySelector("#structured-settings table").appendChild(state.rowPrototype.cloneNode(true));
+	exports.setStructuredEvents();
+	//exports.calcStructuredTime();
+	//data.saveSession();
 }
 exports.removeRow = function (elem){
 	let row = elem.parentElement.parentElement;
 	let table = row.parentElement;
 	table.removeChild(row);
+	exports.setStructuredEvents();
+	//exports.calcStructuredTime();
+	//data.saveSession();
 }
