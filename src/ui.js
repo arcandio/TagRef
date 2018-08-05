@@ -48,8 +48,8 @@ exports.updateUI = function () {
 	for (let i=0; i<classes.length; i++){
 		let c = classes[i];
 		//c.classList.remove('active');
-		console.log(c.id);
-		console.log(classname);
+		//console.log(c.id);
+		//console.log(classname);
 		// MAGIC ALERT. I have NO IDEA why I need trim the ID in order for it to match the classname. IDs aren't supposed to contain any spaces.
 		if(c.id.trim() === classname){
 			c.classList.add('active');

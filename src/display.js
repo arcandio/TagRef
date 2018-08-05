@@ -78,6 +78,25 @@ function buildEventList () {
 			}
 			break;
 		case "class":
+			let co = classes[model.class.classtype];
+			//console.log(co)
+			for (let i=0; i<co.events.length; i++){
+				let s = co.events[i];
+				for (let n=0; n<s.count; n++){
+					let e = new ev(
+						s.time,
+						1,
+						true,
+						selectImage(s.isbreak),
+						s.fliphr,
+						s.flipvr,
+						s.grayscale,
+						s.isbreak,
+						s.breakmessage
+						);
+					state.events.push(e);
+				}
+			}
 			break;
 		case "free":
 			break;
@@ -89,7 +108,7 @@ function buildEventList () {
 						s.time,
 						1,
 						true,
-						selectImage(),
+						selectImage(s.isbreak),
 						s.fliphr,
 						s.flipvr,
 						s.grayscale,
@@ -103,7 +122,10 @@ function buildEventList () {
 	}
 	//console.log(state.events);
 }
-function selectImage () {
+function selectImage (skip) {
+	if (skip){
+		return "";
+	}
 	// randomly pick an image from state.files
 	// If we've used up all our files, refil our unused files
 	if (state.unused.length < 1){
@@ -227,7 +249,7 @@ exports.incrementCounters = function (){
 			//console.log(lastday);
 			if (today.valueOf() !== lastday.valueOf()) {
 				as.drawntoday = false;
-				as.lastday = todaysDate();
+				as.lastday = util.todaysDate();
 			}
 			// Check if we've drawn today
 			if (!as.drawntoday) {
