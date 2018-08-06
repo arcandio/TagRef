@@ -116,7 +116,13 @@ exports.calcClassTime = function () {
 }
 */
 /* Free mode */
-
+exports.setFreeOptions = function (){
+	model.free.fliphr = document.querySelector("#free-settings .flip-h-r").checked;
+	model.free.flipvr = document.querySelector("#free-settings .flip-v-r").checked;
+	model.free.grayscale = document.querySelector("#free-settings .black-and-white").checked;
+	data.saveSession();
+	ui.updateUI();
+}
 
 
 /* Strucured Mode */

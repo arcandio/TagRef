@@ -61,7 +61,16 @@
 							<!--<p><strong>Session Time:</strong> <span class="totaltime"></span></p>-->
 						</div>
 						<div id="free-settings">
-							free
+							<p>
+								<label><input type="checkbox" class="flip-h-r" onchange="mode.setFreeOptions()">
+								Flip Horizontal randomly</label> |
+								<label><input type="checkbox" class="flip-v-r" onchange="mode.setFreeOptions()">
+								Flip Vertical randomly</label>
+							</p>
+							<p>
+								<label><input type="checkbox" class="black-and-white" onchange="mode.setFreeOptions()">
+								Display images in black & white</label>
+							</p>
 							<p><strong>Session Time:</strong> <span class="totaltime">&#x221e;</span></p>
 						</div>
 						<div id="structured-settings">

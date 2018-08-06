@@ -40,6 +40,10 @@ exports.updateUI = function () {
 	document.getElementById("flip-h-r").checked = model.fixed.fliphr;
 	document.getElementById("flip-v-r").checked = model.fixed.flipvr;
 	document.getElementById("black-and-white").checked = model.fixed.grayscale;
+	// free options
+	document.querySelector("#free-settings .flip-h-r").checked = model.free.fliphr;
+	document.querySelector("#free-settings .flip-v-r").checked = model.free.flipvr;
+	document.querySelector("#free-settings .black-and-white").checked = model.free.grayscale;
 	// class options
 	let classes = document.querySelectorAll(".classselect");
 	let classname = model.class.classtype;

@@ -99,6 +99,20 @@ function buildEventList () {
 			}
 			break;
 		case "free":
+			for (let i=0; i<state.files.length; i++) {
+				let e = new ev(
+					0,
+					1,
+					false,
+					selectImage(),
+					model.fixed.fliphr,
+					model.fixed.flipvr,
+					model.fixed.grayscale,
+					false,
+					""
+					);
+				state.events.push(e);
+			}
 			break;
 		case "structured":
 			for (let i=0; i<model.structured.events.length; i++){
