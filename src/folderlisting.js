@@ -65,6 +65,7 @@ function removeFiles (files) {
 	// file count
 	document.getElementById("filecount").innerHTML = state.files ? state.files.length : 0;
 	//console.log(state.files.length);
+	ui.updateStartButton();
 }
 exports.setFilters = function () {
 	// get from UI

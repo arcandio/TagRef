@@ -131,6 +131,17 @@ exports.updateUI = function () {
 		document.getElementById("completionLog").style.display = "none";
 	}
 	exports.updateStats();
+	exports.updateStartButton();
+}
+exports.updateStartButton = function (){
+	// disable start when zero
+	//console.log(state.files.length);
+	if (state.files.length){
+		document.querySelector(".startbutton").disabled = false;
+	}
+	else {
+		document.querySelector(".startbutton").disabled = true;
+	}
 }
 exports.updateStats = function (){
 	// construct stat string

@@ -25,6 +25,7 @@ model.free = {};
 model.structured = {};
 model.mode = '';
 let state = {};
+state.files = [];
 state.timers = [];
 let bip = new Audio('assets/bip.wav');
 let beep = new Audio('assets/beeem.wav');
