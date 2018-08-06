@@ -140,11 +140,13 @@ function selectImage (skip) {
 	if (skip){
 		return "";
 	}
+	//console.log(state.files);
 	// randomly pick an image from state.files
 	// If we've used up all our files, refil our unused files
 	if (state.unused.length < 1){
 		state.unused = state.files.slice();
 	}
+	//console.log(state.unused);
 	// range
 	let max = state.unused.length;
 	// random
@@ -156,19 +158,23 @@ function selectImage (skip) {
 	// remove it from unused
 	state.unused.splice(index, 1);
 	// hand it over
+	//console.log(filepath);
 	return filepath;
 }
 exports.preloadImage = function (filepath) {
 	// place a url on the preloader
 	var pl = document.createElement('div');
-	pl.style.backgroundimage = "url(" + filepath + ")";
+	pl.style.backgroundimage = "url( '" + filepath + "' )";
 	document.getElementById("preloader").appendChild(pl);
 }
 exports.showImage = function (e) {
+	// get the image
 	//console.log(e.image);
-	document.getElementById("display").style.backgroundImage = "url(" + e.image + ")";
-	// apply settings
+	// grab the element
 	let d = document.getElementById("display");
+	//console.log(d)
+	d.style.backgroundImage = "url( '" + e.image + "' )";
+	// apply settings
 	let cl = d.classList;
 	e.grayscale ? cl.add('grayscale') : cl.remove('grayscale');
 	e.flipv ? cl.add('flip-v') : cl.remove('flip-v');
@@ -194,8 +200,8 @@ exports.doEvent = function (reverse) {
 		exports.showImage(e);
 		// setup countdown
 		if (e.istimed){
-			//console.log(e)
 			exports.startTimer(e.time);
+			//console.log(e)
 		}
 	}
 }

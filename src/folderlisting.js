@@ -42,7 +42,7 @@ function removeFiles (files) {
 	//console.log(searcharray);
 	if (searcharray.length) {
 		for (let i=0; i<files.length; i++){
-			if(containsAny(files[i], searcharray)){
+			if(util.containsAny(files[i], searcharray)){
 				searched.push(files[i]);
 			}
 		}
@@ -75,7 +75,7 @@ exports.setFilters = function () {
 	model.searchfilter = model.searchfilter ? model.searchfilter : [];
 	model.blacklist = model.blacklist ? model.blacklist : [];
 	model.blockfilter = model.blockfilter ? model.blockfilter : [];
-	saveSession();
+	data.saveSession();
 	doGlob();
 	ui.updateUI();
 }
