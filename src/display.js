@@ -198,6 +198,17 @@ exports.doEvent = function (reverse) {
 		let e = state.events[state.eventindex];
 		// display image
 		exports.showImage(e);
+		// Set the message
+		document.getElementById("breakmessage").innerHTML = e.breakmessage;
+		// show or hide break time
+		if (e.isbreak) {
+			document.getElementById("break").style.display = "block";
+			document.getElementById("info").classList.add("breakcenter");
+		}
+		else {
+			document.getElementById("break").style.display = "none";
+			document.getElementById("info").classList.remove("breakcenter");
+		}
 		// setup countdown
 		if (e.istimed){
 			exports.startTimer(e.time);
@@ -299,6 +310,7 @@ exports.pauseTimer = function () {
 }
 exports.writeLog = function (e){
 	let f = e.image;
+	f = f ? f : e.breakmessage;
 	//f = f.slice(5,-2);
 	let line = new Date();
 	line = dateformat(line, 'longTime');
