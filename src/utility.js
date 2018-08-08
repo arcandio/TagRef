@@ -87,7 +87,7 @@ exports.todaysDate = function () {
 	return d;
 }
 exports.secondsToTimeSpan = function (seconds){
-	as = {};
+	let as = {};
 	//as.seconds += seconds;
 	//as.seconds = Math.floor(Math.random() * 100000);
 	as.seconds = Math.floor(seconds);
