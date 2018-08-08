@@ -292,17 +292,18 @@ exports.incrementCounters = function (){
 }
 exports.pauseTimer = function () {
 	state.paused = !state.paused;
+	let now = new Date().getTime();
 	// if we're not paused, restart the timer
 	if (!state.paused) {
+		state.timerend = now + state.remaining;
 		state.timer = setInterval(exports.timerTick, 1000);
 	}
 	// if we're paused, set the remaining time so we can get it later
 	else {
-		let now = new Date().getTime();
 		state.remaining = state.timerend - now;
 		clearInterval(state.timer);
 	}
-	updateUI();
+	ui.updateUI();
 }
 exports.writeLog = function (e){
 	let f = e.image;
