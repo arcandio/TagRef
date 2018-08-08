@@ -21,11 +21,28 @@ exports.saveAs = function () {
 	dialog.showSaveDialog({
 		title:"Save Session",
 		defaultpath: model.folders[0],
-		filters:[{name: 'json', extensions:['json']}]
+		filters: filefilter
 	}, function(path) {
 		appsettings.lastsave = path;
 		exports.saveSettings();
 		exports.saveSessionFile();
+	});
+}
+exports.loadDialog = function () {
+	dialog.showOpenDialog({
+		title: "Load Session",
+		defaultpath: appsettings.lastsave,
+		filters: filefilter
+	}, function (path){
+		//console.log(path);
+		appsettings.lastsave = path[0];
+		exports.loadFile();
+	});
+}
+exports.loadFile = function () {
+	fs.readFile(appsettings.lastsave, 'utf8', function(err, contents){
+		localStorage.setItem("session settings", contents);
+		exports.loadSession();
 	});
 }
 exports.saveSessionFile = function () {

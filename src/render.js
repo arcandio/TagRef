@@ -17,6 +17,7 @@ const data = require("./data.js");
 const classes = require("./classes.json");
 
 // globals
+const filefilter = [{name: 'json', extensions:['json']}];
 let appsettings = {};
 let model = {};
 model.fixed = {};
@@ -50,5 +51,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	mode.buildClassOptions();
 	ui.clearActive();
 	data.loadSettings();
-	data.loadSession();
+	data.loadFile();
 });
