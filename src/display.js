@@ -220,12 +220,8 @@ exports.startTimer = function (remaining) {
 	state.timerend = new Date().getTime() + remaining * 1000;
 	//console.log(e)
 	let it = document.getElementById('imagetimer');
-	it.innerHTML = remaining;/*
-	console.log(state.timer)
-	if (state.timer) {
-		clearInterval(state.timer);
-		state.timer = null;
-	}*/
+	it.innerHTML = remaining;
+	clearInterval(state.timer);
 	state.timer = setInterval(exports.timerTick, 1000);
 }
 exports.timerTick = function  () {
