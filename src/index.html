@@ -136,8 +136,8 @@
 			</div>
 			<div id="display-toolbar">
 				<button id="next" onclick="display.doEvent(reverse=false)">Next</button>
-				<button id="previous" onclick="display.doEvent(reverse=true, skipped=true)">Prev</button>
-				<button id="blacklist">Black list</button>
+				<button id="previous" onclick="display.doEvent(reverse=true)">Prev</button>
+				<button id="blacklist" onclick="display.blacklist()">Black list</button>
 				<button id="pause" onclick="display.pauseTimer()">Pause</button>
 				<button id="mutetb" onclick="display.mute()">Mute</button>
 				<input type="range"class="volume" min="0" max="1" value=".5" step=".1" id="vtb" onchange="display.setVolume(this)">

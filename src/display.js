@@ -245,11 +245,14 @@ exports.timerTick = function  () {
 		// turn it off
 		else {
 			// session's complete. Show the completed screen
-			document.getElementById("all-done").style.display = "block";
-			clearInterval(state.timer);
+			sessionComplete();
 		}
 	}
 	exports.soundTest(state.t);
+}
+function sessionComplete(){
+	document.getElementById("all-done").style.display = "block";
+	clearInterval(state.timer);
 }
 exports.incrementCounters = function (){
 	if (state.events.length) {
@@ -289,21 +292,6 @@ exports.incrementCounters = function (){
 			ui.updateStats();
 		}
 	}
-}
-exports.pauseTimer = function () {
-	state.paused = !state.paused;
-	let now = new Date().getTime();
-	// if we're not paused, restart the timer
-	if (!state.paused) {
-		state.timerend = now + state.remaining;
-		state.timer = setInterval(exports.timerTick, 1000);
-	}
-	// if we're paused, set the remaining time so we can get it later
-	else {
-		state.remaining = state.timerend - now;
-		clearInterval(state.timer);
-	}
-	ui.updateUI();
 }
 exports.writeLog = function (e){
 	let f = e.image;
@@ -347,4 +335,41 @@ exports.setVolume = function(elem){
 }
 exports.openLog = function(){
 	shell.openItem(state.logstream.path);
+}
+exports.blacklist = function () {
+	console.log(state.events);
+	console.log(state.eventindex);
+	// add image to the blacklist
+	model.blacklist.push(state.events[state.eventindex].image);
+	model.blacklist = util.cleanArray(model.blacklist);
+	ui.updateUI();
+	// do a skip
+	let removal = state.eventindex;
+	if(state.eventindex < state.events.length - 1) {
+		exports.doEvent(reverse=false);
+	}
+	// remove the event from the list
+	state.events.splice(removal, 1);
+	state.eventindex -= 1;
+	console.log(state.eventindex);
+	console.log(state.events);
+	// check if we removed all events. If so, throw finish
+	if (!state.events.length){
+		sessionComplete();
+	}
+}
+exports.pauseTimer = function () {
+	state.paused = !state.paused;
+	let now = new Date().getTime();
+	// if we're not paused, restart the timer
+	if (!state.paused) {
+		state.timerend = now + state.remaining;
+		state.timer = setInterval(exports.timerTick, 1000);
+	}
+	// if we're paused, set the remaining time so we can get it later
+	else {
+		state.remaining = state.timerend - now;
+		clearInterval(state.timer);
+	}
+	ui.updateUI();
 }
