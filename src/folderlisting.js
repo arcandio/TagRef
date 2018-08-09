@@ -2,7 +2,7 @@
 exports.selectFolder = function () {
 	exports.setFolders(dialog.showOpenDialog({properties: ['openFile', 'openDirectory', 'multiSelections']}));
 	
-}
+};
 exports.setFolders = function (folders) {
 	if (folders){
 		model.folders = util.cleanupFolderPaths(folders);
@@ -17,7 +17,7 @@ exports.setFolders = function (folders) {
 		}
 		doGlob();
 	}
-}
+};
 
 /* Base File List */
 
@@ -27,7 +27,7 @@ function doGlob() {
 	//let files = [];
 	let pat = util.packMultiGlobF(model.folders) + "/**/" + util.packMultiGlobE(extensions);
 	//console.log(pat);
-	let g = new Glob(pat, globComplete)
+	let g = new Glob(pat, globComplete);
 	//console.log(g);
 }
 function globComplete (err, matches) {
@@ -35,6 +35,8 @@ function globComplete (err, matches) {
 	removeFiles(matches);
 }
 function removeFiles (files) {
+	// ensure the filters are set
+	//model.searchfilter = model.searchfilter ? model.searchfilter : [];
 	//console.log(files);
 	let searched = [];
 	// iterate through the searchlist and keep only matches
@@ -79,4 +81,4 @@ exports.setFilters = function () {
 	data.saveSession();
 	doGlob();
 	ui.updateUI();
-}
+};

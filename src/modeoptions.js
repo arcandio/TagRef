@@ -6,44 +6,25 @@ exports.setMode = function (m) {
     model.mode = m;
     data.saveSession();
     ui.updateUI();
-}
+};
 
 exports.showAbout = function () {
 	display.togglePage("about");
-}
+};
 exports.showData = function () {
 	display.togglePage("data");
-}
+};
 
 /* Mode Options */
 
-exports.setLengthPerImage = function (element) {
-	//clear other children
-	var children = Array.prototype.slice.call(element.parentElement.children);
-	children.forEach(function(child){
-		child.classList.remove("active");
-	});
-	//element.classList.add("active");
-	// figure out time in seconds
-	let seconds = 0;
-	let b = element.innerHTML;
-	//console.log(b);
-	if (b === "Custom") {
-		seconds = parseFloat(document.getElementById("fixed-custom-time").value)*60;
-	}
-	else if (b.endsWith("s")) {
-		seconds = parseFloat(b.replace("s","")) * 1;
-	}
-	else if (b.endsWith("m")) {
-		seconds = parseFloat(b.replace("m", "")) * 60;
-	}
+exports.setLengthPerImage = function (seconds) {
 	//console.log(seconds);
 	model.fixed.seconds = seconds;
 	model.fixed.iscustomtime = false;
 	exports.calcFixedTime();
 	data.saveSession();
 	ui.updateUI();
-}
+};
 exports.setCustomLength = function () {
 	let seconds = parseFloat(document.getElementById("fixed-custom-time").value)*60;
 	model.fixed.seconds = seconds;
@@ -52,25 +33,26 @@ exports.setCustomLength = function () {
 	exports.calcFixedTime();
 	data.saveSession();
 	ui.updateUI();
-}
+};
 exports.setFixedNumber = function (element){
 	//console.log(element.value);
 	model.fixed.number = parseInt(element.value);
 	exports.calcFixedTime();
 	data.saveSession();
 	ui.updateUI();
-}
+};
 exports.setFixedOptions = function (){
-	model.fixed.fliphr = document.getElementById("flip-h-r").checked;
-	model.fixed.flipvr = document.getElementById("flip-v-r").checked;
-	model.fixed.grayscale = document.getElementById("black-and-white").checked;
+	model.fixed.fliphr = document.querySelector("#fixed-settings .flip-h-r").checked;
+	model.fixed.flipvr = document.querySelector("#fixed-settings .flip-v-r").checked;
+	model.fixed.grayscale = document.querySelector("#fixed-settings .grayscale").checked;
 	exports.calcFixedTime();
 	data.saveSession();
 	ui.updateUI();
-}
+};
 exports.calcFixedTime = function  () {
 	model.fixed.totaltime = parseFloat(model.fixed.number) * parseFloat(model.fixed.seconds);
-}
+};
+
 /* Class Mode */
 
 exports.buildClassOptions = function () {
@@ -102,14 +84,14 @@ exports.buildClassOptions = function () {
 		content += "</div>";
 	}
 	box.innerHTML = content;
-}
+};
 exports.selectClass = function(elem){
 	let classtype = elem.innerHTML;
-	console.log()
+	console.log();
 	model.class.classtype = elem.innerHTML;
 	data.saveSession();
 	ui.updateUI();
-}
+};
 /*
 exports.calcClassTime = function () {
 
@@ -119,15 +101,16 @@ exports.calcClassTime = function () {
 exports.setFreeOptions = function (){
 	model.free.fliphr = document.querySelector("#free-settings .flip-h-r").checked;
 	model.free.flipvr = document.querySelector("#free-settings .flip-v-r").checked;
-	model.free.grayscale = document.querySelector("#free-settings .black-and-white").checked;
+	model.free.grayscale = document.querySelector("#free-settings .grayscale").checked;
 	data.saveSession();
 	ui.updateUI();
-}
+};
 
 
 /* Strucured Mode */
 
 exports.setStructuredEvents = function () {
+	console.log("sse");
 	// get the table
 	let table = document.querySelector("#structured-settings table");
 	// iterate through each row
@@ -146,36 +129,43 @@ exports.setStructuredEvents = function () {
 		e.grayscale = row.querySelector("td.gray input").checked;
 		e.istimed = true;
 		// add that EV object to the list
-		model.structured.events.push(e)
+		model.structured.events.push(e);
 	}
 	exports.calcStructuredTime();
 	//save the model
+	eventListeners.attachRows();
 	data.saveSession();
 	ui.updateUI();
-}
+};
 exports.calcStructuredTime = function () {
 	model.structured.totaltime = 0;
-	model.structured.events.forEach(function(e){
-		model.structured.totaltime += parseFloat(e.time) * parseFloat(e.count);
-	});
-}
+	if (mode.structured && mode.structured.events){
+		model.structured.events.forEach(function(e){
+			model.structured.totaltime += parseFloat(e.time) * parseFloat(e.count);
+		});
+	}
+};
 exports.setRowPrototype = function  () {
 	state.rowPrototype = document.querySelector("#structured-settings table tr:nth-child(2)").cloneNode(true);
 	//console.log(state.rowPrototype);
 	document.querySelector("#structured-settings table tr:nth-child(2)").remove();
-}
+};
 exports.appendNewRow = function () {
 	let newrow = 
 	document.querySelector("#structured-settings table").appendChild(state.rowPrototype.cloneNode(true));
 	exports.setStructuredEvents();
 	//exports.calcStructuredTime();
 	//data.saveSession();
-}
-exports.removeRow = function (elem){
+};
+exports.removeRow = function (event){
+	//console.log(event);
+	let elem = event.path[0];
 	let row = elem.parentElement.parentElement;
 	let table = row.parentElement;
+	//console.log(table);
+	//console.log(row);
 	table.removeChild(row);
 	exports.setStructuredEvents();
 	//exports.calcStructuredTime();
 	//data.saveSession();
-}
+};

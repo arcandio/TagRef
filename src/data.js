@@ -41,11 +41,23 @@ exports.loadDialog = function () {
 	});
 };
 exports.loadFile = function () {
+	// we had a last save location
 	if (appsettings.lastsave) {
 		fs.readFile(appsettings.lastsave, 'utf8', function(err, contents){
 			localStorage.setItem("session settings", contents);
+			//console.log('load last save');
 			exports.loadSession();
 		});
+	}
+	// we didn't have a save, but we had local settings
+	else if (localStorage.getItem('session settings') !== null) {
+		//console.log('session settings');
+		exports.loadSession();
+	}
+	// we've got nothing, load the base file
+	else {
+		localStorage.setItem("session settings", JSON.stringify(newfile, null, 2));
+		exports.loadSession();
 	}
 };
 exports.saveSessionFile = function () {
@@ -70,6 +82,7 @@ exports.saveSettings = function () {
 };
 exports.loadSettings = function () {
 	appsettings = JSON.parse(localStorage.getItem("application settings"));
+	//console.log(appsettings);
 	// if we didn't get anything, make a new one
 	appsettings = appsettings ? appsettings : {};
 	// set UI
@@ -114,9 +127,7 @@ exports.setUpLogStream = function () {
 exports.clearData = function(){
 	localStorage.removeItem("application settings");
 	localStorage.removeItem("session settings");
-	state = {};
-	state.files = [];
-	state.timers = [];
+	exports.loadFile();
 	data.saveSettings();
 	display.togglePage('setup');
 	ui.updateUI();

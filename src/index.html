@@ -12,46 +12,46 @@
 				<h1>TagRef Settings</h1>
 				<div id="settings">
 					<div id="root-settings">
-						<button id="choose-folder" onclick="fl.selectFolder()">Choose Folder</button>
+						<button id="choose-folder">Choose Folder</button>
 						<ul id="root-folders"></ul>
-						<textarea id="searchfilter" placeholder="Search List: only include files containing one of these words, 1 per line" onkeyup="fl.setFilters()"></textarea>
-						<textarea id="blacklist" placeholder="Blacklist: images removed from possible results, 1 per line" onkeyup="fl.setFilters()"></textarea>
-						<textarea id="blockfilter" placeholder="Block Filter: words or tags to block from image names, 1 per line" onkeyup="fl.setFilters()"></textarea>
+						<textarea id="searchfilter" placeholder="Search List: only include files containing one of these words, 1 per line"></textarea>
+						<textarea id="blacklist" placeholder="Blacklist: images removed from possible results, 1 per line"></textarea>
+						<textarea id="blockfilter" placeholder="Block Filter: words or tags to block from image names, 1 per line"></textarea>
 						<p>File Count: <span id="filecount">0</span> </p>
 					</div>
 					<hr>
 					<div id="mode-tabs">
 						<p>
 							<strong>Mode: </strong>
-							<button onclick="mode.setMode('fixed')" class="fixed">Fixed Length</button>
-							<button onclick="mode.setMode('class')" class="class">Class Session</button>
-							<button onclick="mode.setMode('free')" class="free">No Time Limits</button>
-							<button onclick="mode.setMode('structured')" class="structured">Structured</button>
+							<button class="fixed">Fixed Length</button>
+							<button class="class">Class Session</button>
+							<button class="free">No Time Limits</button>
+							<button class="structured">Structured</button>
 						</p>
 					</div>
 					<div id="mode-settings">
 						<div id="fixed-settings">
 							<p><strong>Time per Image: </strong>
-								<button onclick="mode.setLengthPerImage(this)" data-time="30">30s</button>
-								<button onclick="mode.setLengthPerImage(this)" data-time="60">1m</button>
-								<button onclick="mode.setLengthPerImage(this)" data-time="300">5m</button>
-								<button onclick="mode.setLengthPerImage(this)" data-time="600">10m</button>
-								<button onclick="mode.setLengthPerImage(this)" data-time="1800">30m</button>
-								<input type="number" id="fixed-custom-time" min="0" max="480" value="0" onchange="mode.setCustomLength(this)" size="3" data-time="custom">m
+								<button data-time="30">30s</button>
+								<button data-time="60">1m</button>
+								<button data-time="300">5m</button>
+								<button data-time="600">10m</button>
+								<button data-time="1800">30m</button>
+								<input type="number" id="fixed-custom-time" min="0" max="480" value="0" size="3" data-time="custom">m
 								
 							</p>
 							<p>
 								<label for="fixed-number" min="0">Number of Images: </label>
-								<input type="number" id="fixed-number" onchange="mode.setFixedNumber(this)" value="10" min="1">
+								<input type="number" id="fixed-number" value="10" min="1">
 							</p>
 							<p>
-								<input type="checkbox" id="flip-h-r" onchange="mode.setFixedOptions()">
+								<input type="checkbox" class="flip-h-r">
 								<label for="flip-h-r">Flip Horizontal randomly</label> |
-								<input type="checkbox" id="flip-v-r" onchange="mode.setFixedOptions()">
+								<input type="checkbox" class="flip-v-r">
 								<label for="flip-v-r">Flip Vertical randomly</label>
 							</p>
 							<p>
-								<input type="checkbox" id="black-and-white" onchange="mode.setFixedOptions()">
+								<input type="checkbox" class="grayscale">
 								<label for="black-and-white">Display images in black & white</label>
 							</p>
 							<p><strong>Session Time:</strong> <span class="totaltime"></span></p>
@@ -63,13 +63,13 @@
 						</div>
 						<div id="free-settings">
 							<p>
-								<label><input type="checkbox" class="flip-h-r" onchange="mode.setFreeOptions()">
+								<label><input type="checkbox" class="flip-h-r">
 								Flip Horizontal randomly</label> |
-								<label><input type="checkbox" class="flip-v-r" onchange="mode.setFreeOptions()">
+								<label><input type="checkbox" class="flip-v-r">
 								Flip Vertical randomly</label>
 							</p>
 							<p>
-								<label><input type="checkbox" class="black-and-white" onchange="mode.setFreeOptions()">
+								<label><input type="checkbox" class="grayscale">
 								Display images in black & white</label>
 							</p>
 							<p><strong>Session Time:</strong> <span class="totaltime">&#x221e;</span></p>
@@ -87,38 +87,38 @@
 									<th>X</th>
 								</tr>
 								<tr class="repeatable">
-									<td class="number"><input type="number" min="1" onchange="mode.setStructuredEvents()" value="1"></td>
-									<td class="time"><input type="number" min="1" onchange="mode.setStructuredEvents()" value="1"></td>
-									<td class="break"><input type="checkbox" onchange="mode.setStructuredEvents()"></td>
-									<td class="message"><input type="text" onchange="mode.setStructuredEvents()"></td>
-									<td class="fliph"><input type="checkbox" onchange="mode.setStructuredEvents()"></td>
-									<td class="flipv"><input type="checkbox" onchange="mode.setStructuredEvents()"></td>
-									<td class="gray"><input type="checkbox" onchange="mode.setStructuredEvents()"></td>
+									<td class="number"><input type="number" min="1" value="1"></td>
+									<td class="time"><input type="number" min="1" value="1"></td>
+									<td class="break"><input type="checkbox"></td>
+									<td class="message"><input type="text"></td>
+									<td class="fliph"><input type="checkbox"></td>
+									<td class="flipv"><input type="checkbox"></td>
+									<td class="gray"><input type="checkbox"></td>
 									<td>
-										<button onclick="mode.removeRow(this)" title="remove this element" class="delete">X</button>
+										<button title="remove this element" class="delete">X</button>
 										<!--<button onclick="moveOneRow(this)">&uarr;</button>
 										<button onclick="moveOneRow(this, true)">&darr;</button>-->
 									</td>
 								</tr>
 							</table>
-							<button onclick="mode.appendNewRow()">Add New</button>
+							<button class="newrow">Add New</button>
 							<p><strong>Session Time:</strong> <span class="totaltime"></span></p>
 						</div>
 					</div>
 					<hr>
 					<p><strong>Options</strong></p>
-					<input type="checkbox" id="save-log" onchange="data.setSaveLog()">
+					<input type="checkbox" id="save-log">
 					<label for="save-log">Save drawing log</label>
 					<br>
 					<label for="vsetting">Volume </label>
-					<input type="range" class="volume" min="0" max="1" value=".5" step=".1" id="vsetting" onchange="display.setVolume(this)">
-					<button onclick="display.mute()" id="mutest">Mute</button>
+					<input type="range" class="volume" min="0" max="1" value=".5" step=".1" id="vsetting">
+					<button id="mutest">Mute</button>
 					<hr>
-					<button onclick="display.startNewSession()" class="startbutton">Start Session</button>
-					<button onclick="data.saveAs()" title="once saved, your session will be automatically saved on change.">Save Session File</button>
-					<button onclick="data.loadDialog()">Load Session File</button>
-					<button onclick="mode.showAbout()">About</button> 
-					<button onclick="mode.showData()">Data</button> 
+					<button class="startbutton">Start Session</button>
+					<button class="savebutton" title="once saved, your session will be automatically saved on change.">Save Session File</button>
+					<button class="loadbutton">Load Session File</button>
+					<button class="aboutbutton">About</button> 
+					<button class="databutton">Data</button> 
 				</div>
 			</div>
 			
@@ -136,14 +136,14 @@
 				</div>
 			</div>
 			<div id="display-toolbar">
-				<button id="next" onclick="display.doEvent(reverse=false)">Next</button>
-				<button id="previous" onclick="display.doEvent(reverse=true)">Prev</button>
-				<button id="blacklist" onclick="display.blacklist()">Black list</button>
-				<button id="pause" onclick="display.pauseTimer()">Pause</button>
-				<button id="mutetb" onclick="display.mute()">Mute</button>
-				<input type="range"class="volume" min="0" max="1" value=".5" step=".1" id="vtb" onchange="display.setVolume(this)">
-				<button id="open-log" onclick="display.openLog()">Open Log</button>
-				<button id="exit-session" onclick="display.exitSession()">Exit Session</button>
+				<button id="next">Next</button>
+				<button id="previous">Prev</button>
+				<button id="blacklist">Black list</button>
+				<button id="pause">Pause</button>
+				<button id="mutetb">Mute</button>
+				<input type="range"class="volume" min="0" max="1" value=".5" step=".1" id="vtb">
+				<button id="open-log">Open Log</button>
+				<button id="exit-session">Exit Session</button>
 			</div>
 			<div id="countdown" class="fsoverlay">
 				<h1 class="timer">0:00</h1>
@@ -153,8 +153,8 @@
 					<h1>Session Complete</h1>
 					<h2>Good Job!</h2>
 					<p>
-						<button onclick="display.exitSession()">Exit Session</button> <span id="completionLog"> or 
-						<button class="sessionloglocation" onclick="display.openLog()">Open Session Log</button></span>
+						<button id="exit-session-done">Exit Session</button> <span id="completionLog"> or 
+						<button class="sessionloglocation">Open Session Log</button></span>
 					</p>
 					<div class="stats"></div>
 				</div>
@@ -167,7 +167,7 @@
 			<div class="panel">
 				<h1>About</h1>
 				<div>
-					<button onclick="display.togglePage('setup')">Back</button> 
+					<button class="back top">Back</button> 
 					<h2>About TagRef</h2>
 					<p>TagRef is a small app designed to show you a well-defined subset of your reference material in a structured or timed manner.</p>
 					<p><a href="https://github.com/arcandio/TagRef/issues">Bugs, issues, and suggestions</a></p>
@@ -203,7 +203,7 @@
 						<li>You can set abitrary minute percentages with the custom time box, like ".1" for 6 seconds.</li>
 
 					</ul>
-					<button onclick="display.togglePage('setup')">Back</button>
+					<button class="back bottom">Back</button>
 
 				</div>
 			</div>
@@ -212,14 +212,14 @@
 			<div class="panel">
 				<h1>Data</h1>
 				<div>
-					<button onclick="display.togglePage('setup')">Back</button>
+					<button class="back top">Back</button>
 					<div class="stats"></div>
 					<h2>Your Data</h2>
 					<p>Your data is stored in this app's LocalStorage. You can clear that data at any time.
-					<button onclick="data.clearData()">Clear All Data</button>
+					<button id="clear-data">Clear All Data</button>
 					</p>
 					<p>Information about the names of your files is not stored in the app, but it <em>is</em> stored in your log files, if you choose to enable "Save drawing log." This feature records the time and filename only.</p>
-					<button onclick="display.togglePage('setup')">Back</button>
+					<button class="back bottom">Back</button>
 				</div>
 			</div>
 		</div>

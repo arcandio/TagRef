@@ -1,0 +1,34 @@
+{
+  "fixed": {
+    "seconds": 30,
+    "iscustomtime": false,
+    "number": 10,
+    "fliphr": false,
+    "flipvr": false,
+    "grayscale": false,
+    "totaltime": 300
+  },
+  "class": {
+    "classtype": "Gesture Drawing"
+  },
+  "free": {
+    "fliphr": false,
+    "flipvr": false,
+    "grayscale": false
+  },
+  "structured": {
+    "events": [],
+    "totaltime": 0
+  },
+  "mode": "fixed",
+  "folders": [],
+  "blacklist": [
+    ""
+  ],
+  "blockfilter": [
+    ""
+  ],
+  "searchfilter": [
+    ""
+  ]
+}

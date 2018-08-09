@@ -5,7 +5,8 @@ exports.togglePage = function (page) {
 		elem.classList.add("h");
 	});
 	document.querySelector("#" + page + "-page").classList.remove("h");
-}
+	state.page = page;
+};
 
 /* Display */
 
@@ -17,7 +18,7 @@ exports.startNewSession = function  () {
 	// start display
 	exports.togglePage('display');
 	exports.doCountdown(5);
-}
+};
 exports.doCountdown = function (length){
 	state.countdownend = new Date().getTime() + length*1000;
 	exports.showCountdown();
@@ -34,14 +35,14 @@ exports.doCountdown = function (length){
 			exports.hideCountdown();
 			clearInterval(state.countdown);
 		}
-	}, 1000)
-}
+	}, 1000);
+};
 exports.showCountdown = function (){
 	document.getElementById("countdown").style.display = "block";	
-}
+};
 exports.hideCountdown = function () {
 	document.getElementById("countdown").style.display = "none";
-}
+};
 exports.soundTest = function (t){
 	if (t <= 3 && t > 0){
 		//console.log("bip");
@@ -51,7 +52,7 @@ exports.soundTest = function (t){
 		//console.log("BEEEEEP");
 		beep.play();
 	}
-}
+};
 function buildEventList () {
 	state.events = [];
 	state.unused = state.files.slice();
@@ -166,7 +167,7 @@ exports.preloadImage = function (filepath) {
 	var pl = document.createElement('div');
 	pl.style.backgroundimage = "url( '" + filepath + "' )";
 	document.getElementById("preloader").appendChild(pl);
-}
+};
 exports.showImage = function (e) {
 	// get the image
 	//console.log(e.image);
@@ -181,7 +182,7 @@ exports.showImage = function (e) {
 	e.fliph ? cl.add('flip-h') : cl.remove('flip-h');
 	//write to log
 	exports.writeLog(e);
-}
+};
 exports.doEvent = function (reverse) {
 	// pick the next event to show, whether it's forward or backward
 	state.eventindex += reverse ? -1 : 1;
@@ -189,7 +190,7 @@ exports.doEvent = function (reverse) {
 	// clamp the event index for safety
 	// if it's less than 0, just clamp
 	if (state.eventindex < 0) {
-		state.eventindex = 0
+		state.eventindex = 0;
 	}
 	else {
 		// hide the completed screen
@@ -215,7 +216,7 @@ exports.doEvent = function (reverse) {
 			//console.log(e)
 		}
 	}
-}
+};
 exports.startTimer = function (remaining) {
 	state.timerend = new Date().getTime() + remaining * 1000;
 	//console.log(e)
@@ -223,7 +224,7 @@ exports.startTimer = function (remaining) {
 	it.innerHTML = remaining;
 	clearInterval(state.timer);
 	state.timer = setInterval(exports.timerTick, 1000);
-}
+};
 exports.timerTick = function  () {
 	let now = new Date().getTime();
 	let distance = state.timerend - now;
@@ -249,7 +250,7 @@ exports.timerTick = function  () {
 		}
 	}
 	exports.soundTest(state.t);
-}
+};
 function sessionComplete(){
 	document.getElementById("all-done").style.display = "block";
 	clearInterval(state.timer);
@@ -292,7 +293,7 @@ exports.incrementCounters = function (){
 			ui.updateStats();
 		}
 	}
-}
+};
 exports.writeLog = function (e){
 	let f = e.image;
 	f = f ? f : e.breakmessage;
@@ -305,13 +306,13 @@ exports.writeLog = function (e){
 	if (state.logstream) {
 		state.logstream.write('\n' + line);
 	}
-}
+};
 exports.exitSession = function () {
 	// clear the timer
 	clearInterval(state.timer);
 	// clear the event list
 	state.events = [];
-	state.unused = []
+	state.unused = [];
 	state.eventindex = -1;
 	state.timerend = new Date().getTime();
 	state.paused = false;
@@ -319,23 +320,29 @@ exports.exitSession = function () {
 	document.getElementById("all-done").style.display = "none";
 	// show the setup page
 	exports.togglePage('setup');
-}
+};
 
 /* Toolbar */
 
 exports.mute = function(){
 	appsettings.muted = !appsettings.muted;
 	data.saveSettings();
-	ui.updateUI()
-}
-exports.setVolume = function(elem){
-	appsettings.volume = elem.value;
+	ui.updateUI();
+};
+exports.setVolume = function(){
+	let s = document.querySelector("#setup-page .volume").value;
+	let d = document.querySelector("#display-page .volume").value;
+	//console.log(s);
+	//console.log(d);
+	//console.log(state.page);
+	let v = state.page === "setup" ? s : d;
+	appsettings.volume = v;
 	data.saveSettings();
 	ui.updateUI();
-}
+};
 exports.openLog = function(){
 	shell.openItem(state.logstream.path);
-}
+};
 exports.blacklist = function () {
 	console.log(state.events);
 	console.log(state.eventindex);
@@ -357,7 +364,7 @@ exports.blacklist = function () {
 	if (!state.events.length){
 		sessionComplete();
 	}
-}
+};
 exports.pauseTimer = function () {
 	state.paused = !state.paused;
 	let now = new Date().getTime();
@@ -372,4 +379,4 @@ exports.pauseTimer = function () {
 		clearInterval(state.timer);
 	}
 	ui.updateUI();
-}
+};

@@ -43,13 +43,13 @@ exports.updateUI = function () {
 	// number of images
 	document.getElementById("fixed-number").value = model.fixed.number;
 	// fixed options
-	document.getElementById("flip-h-r").checked = model.fixed.fliphr;
-	document.getElementById("flip-v-r").checked = model.fixed.flipvr;
-	document.getElementById("black-and-white").checked = model.fixed.grayscale;
+	document.querySelector("#fixed-settings .flip-h-r").checked = model.fixed.fliphr;
+	document.querySelector("#fixed-settings .flip-v-r").checked = model.fixed.flipvr;
+	document.querySelector("#fixed-settings .grayscale").checked = model.fixed.grayscale;
 	// free options
 	document.querySelector("#free-settings .flip-h-r").checked = model.free.fliphr;
 	document.querySelector("#free-settings .flip-v-r").checked = model.free.flipvr;
-	document.querySelector("#free-settings .black-and-white").checked = model.free.grayscale;
+	document.querySelector("#free-settings .grayscale").checked = model.free.grayscale;
 	// class options
 	let classes = document.querySelectorAll(".classselect");
 	let classname = model.class.classtype;
@@ -152,6 +152,7 @@ exports.updateStartButton = function (){
 	}
 };
 exports.updateStats = function (){
+	appsettings.stats = appsettings.stats ? appsettings.stats : {};
 	// construct stat string
 	let as = appsettings.stats;
 	let totals = as.seconds;
