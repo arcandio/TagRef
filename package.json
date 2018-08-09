@@ -53,11 +53,11 @@
     "glob": "^7.1.2"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.22",
-    "@electron-forge/maker-deb": "^6.0.0-beta.22",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.22",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.22",
-    "@electron-forge/maker-zip": "^6.0.0-beta.22",
+    "@electron-forge/cli": "^6.0.0-beta.27",
+    "@electron-forge/maker-deb": "^6.0.0-beta.27",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.27",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.27",
+    "@electron-forge/maker-zip": "^6.0.0-beta.27",
     "electron": "2.0.5",
     "electron-prebuilt-compile": "2.0.6"
   }
