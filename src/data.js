@@ -8,7 +8,7 @@ exports.saveSession = function () {
 		exports.saveSessionFile();
 	}
 
-}
+};
 exports.saveFile = function () {
 	if(!appsettings.lastsave){
 		saveAs();
@@ -16,7 +16,7 @@ exports.saveFile = function () {
 	else {
 		exports.saveSessionFile();
 	}
-}
+};
 exports.saveAs = function () {
 	dialog.showSaveDialog({
 		title:"Save Session",
@@ -27,7 +27,7 @@ exports.saveAs = function () {
 		exports.saveSettings();
 		exports.saveSessionFile();
 	});
-}
+};
 exports.loadDialog = function () {
 	dialog.showOpenDialog({
 		title: "Load Session",
@@ -38,13 +38,15 @@ exports.loadDialog = function () {
 		appsettings.lastsave = path[0];
 		exports.loadFile();
 	});
-}
+};
 exports.loadFile = function () {
-	fs.readFile(appsettings.lastsave, 'utf8', function(err, contents){
-		localStorage.setItem("session settings", contents);
-		exports.loadSession();
-	});
-}
+	if (appsettings.lastsave) {
+		fs.readFile(appsettings.lastsave, 'utf8', function(err, contents){
+			localStorage.setItem("session settings", contents);
+			exports.loadSession();
+		});
+	}
+};
 exports.saveSessionFile = function () {
 	if (appsettings.lastsave) {
 		fs.writeFile(appsettings.lastsave, JSON.stringify(model, null, 2), 'utf-8', (err) => {
@@ -52,7 +54,7 @@ exports.saveSessionFile = function () {
 			//console.log("saved");
 		});
 	}
-}
+};
 exports.loadSession = function () {
 	model = JSON.parse(localStorage.getItem("session settings"));
 	// setup stuff
@@ -61,19 +63,21 @@ exports.loadSession = function () {
 	//mode.calcClassTime();
 	mode.calcStructuredTime();
 	ui.updateUI();
-}
+};
 exports.saveSettings = function () {
 	localStorage.setItem("application settings", JSON.stringify(appsettings, null, 2));
-}
+};
 exports.loadSettings = function () {
 	appsettings = JSON.parse(localStorage.getItem("application settings"));
+	// if we didn't get anything, make a new one
+	appsettings = appsettings ? appsettings : {};
 	// set UI
-	document.getElementById("save-log").checked = appsettings.savelog;
+	document.getElementById("save-log").checked = appsettings.savelog ? appsettings.savelog : true;
 	// if we don't have a count, make one
 	if (!appsettings.stats) {
 		as = {};
 		as.count = 0;
-		as.lastday = todaysDate();
+		as.lastday = util.todaysDate();
 		as.drawntoday = false;
 		as.daysdrawn = 0;
 		as.days = 0;
@@ -83,11 +87,11 @@ exports.loadSettings = function () {
 		as.days = 0;
 		appsettings.stats = as;
 	}
-}
+};
 exports.setSaveLog = function () {
 	appsettings.savelog = document.getElementById("save-log").checked;
 	exports.saveSettings();
-}
+};
 exports.setUpLogStream = function () {
 	if(appsettings.savelog){
 		// location
@@ -105,4 +109,14 @@ exports.setUpLogStream = function () {
 	else {
 		document.getElementById('open-log').style.display = "none";
 	}
-}
+};
+exports.clearData = function(){
+	localStorage.removeItem("application settings");
+	localStorage.removeItem("session settings");
+	state = {};
+	state.files = [];
+	state.timers = [];
+	data.saveSettings();
+	display.togglePage('setup');
+	ui.updateUI();
+};

@@ -1,8 +1,8 @@
 {
-  "name": "tagref",
-  "productName": "tagref",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "TagRef",
+  "productName": "TagRef",
+  "version": "0.1.0",
+  "description": "A reference app for artists",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -17,6 +17,11 @@
   "config": {
     "forge": {
       "packagerConfig": {},
+      "github_repository": {
+        "owner": "arcandio",
+        "name": "TagRef",
+        "draft": true
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",

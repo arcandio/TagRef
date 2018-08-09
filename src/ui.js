@@ -7,8 +7,14 @@ exports.clearActive = function () {
 	children.forEach(function(child){
 		child.classList.remove("active");
 	});
-}
+};
 exports.updateUI = function () {
+	if(!model){
+		model = {};
+	}
+	if (!model.mode){
+		model.mode = "fixed";
+	}
 	exports.clearActive();
 	// folders are done by setFolders()
 	// filters
@@ -19,7 +25,7 @@ exports.updateUI = function () {
 	util.autoGrowTextArea(document.getElementById("blockfilter"));
 	util.autoGrowTextArea(document.getElementById("blacklist"));
 	// mode
-    document.getElementById(model.mode + "-settings").classList.add('active');
+    document.querySelector("#mode-tabs > p > button." + model.mode).classList.add('active');
     document.querySelector("#mode-tabs ." + model.mode).classList.add('active');
 	// time per image
 	let t = model.fixed.seconds;
@@ -59,7 +65,7 @@ exports.updateUI = function () {
 			c.classList.add('active');
 		}
 		else {
-			c.classList.remove('active')
+			c.classList.remove('active');
 		}
 	}
 	// structured options
@@ -67,6 +73,8 @@ exports.updateUI = function () {
 	let rows = table.querySelectorAll(".repeatable");
 	// remove old elements
 	// resize table
+	model.structured = model.structured ? model.structured : {};
+	model.structured.events = model.structured.events ? model.structured.events : [];
 	while (rows.length !== model.structured.events.length) {
 		if(rows.length > model.structured.events.length){
 			rows[rows.length-1].remove();
@@ -99,7 +107,7 @@ exports.updateUI = function () {
 	// Toolbars
 	// volume
 	if(!appsettings.volume){
-		appsettings.volume = .5;
+		appsettings.volume = 0.5;
 	}
 	bip.volume = appsettings.volume;
 	beep.volume = appsettings.volume;
@@ -109,12 +117,12 @@ exports.updateUI = function () {
 	bip.muted = appsettings.muted;
 	beep.muted = appsettings.muted;
 	if (appsettings.muted) {
-		document.getElementById("mutetb").classList.add("active")
-		document.getElementById("mutest").classList.add("active")
+		document.getElementById("mutetb").classList.add("active");
+		document.getElementById("mutest").classList.add("active");
 	}
 	else {
-		document.getElementById("mutetb").classList.remove("active")
-		document.getElementById("mutest").classList.remove("active")
+		document.getElementById("mutetb").classList.remove("active");
+		document.getElementById("mutest").classList.remove("active");
 	}
 	// pause
 	if (state.paused) {
@@ -132,7 +140,7 @@ exports.updateUI = function () {
 	}
 	exports.updateStats();
 	exports.updateStartButton();
-}
+};
 exports.updateStartButton = function (){
 	// disable start when zero
 	//console.log(state.files.length);
@@ -142,7 +150,7 @@ exports.updateStartButton = function (){
 	else {
 		document.querySelector(".startbutton").disabled = true;
 	}
-}
+};
 exports.updateStats = function (){
 	// construct stat string
 	let as = appsettings.stats;
@@ -167,9 +175,9 @@ exports.updateStats = function (){
 	str += "<dt>Average Time per Drawing</dt>";
 	str += "<dd>" + util.secondsToTimeSpan(tpd) + "</dd>";
 	str += "<dt>Days Drawn</dt>";
-	str += "<dd>" + as.daysdrawn + "</dd>"
+	str += "<dd>" + as.daysdrawn + "</dd>";
 	str += "<dt>Average Time Spent per day Drawing</dt>";
-	str += "<dd>" + util.secondsToTimeSpan(ddt) + "</dd>"
+	str += "<dd>" + util.secondsToTimeSpan(ddt) + "</dd>";
 	str += "</div></dl>";
 	// get all stat elements
 	let statelements = document.getElementsByClassName('stats');
@@ -178,4 +186,4 @@ exports.updateStats = function (){
 		let elem = statelements[i];
 		elem.innerHTML = str;
 	}
-}
+};
