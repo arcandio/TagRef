@@ -52,4 +52,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	ui.clearActive();
 	data.loadSettings();
 	data.loadFile();
+	ui.updateUI();
 });

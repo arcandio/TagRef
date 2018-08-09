@@ -37,6 +37,7 @@ exports.loadDialog = function () {
 		//console.log(path);
 		appsettings.lastsave = path[0];
 		exports.loadFile();
+		exports.saveSettings();
 	});
 };
 exports.loadFile = function () {

@@ -25,7 +25,7 @@ exports.updateUI = function () {
 	util.autoGrowTextArea(document.getElementById("blockfilter"));
 	util.autoGrowTextArea(document.getElementById("blacklist"));
 	// mode
-    document.querySelector("#mode-tabs > p > button." + model.mode).classList.add('active');
+    document.querySelector("#" + model.mode + "-settings").classList.add('active');
     document.querySelector("#mode-tabs ." + model.mode).classList.add('active');
 	// time per image
 	let t = model.fixed.seconds;
