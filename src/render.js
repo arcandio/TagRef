@@ -54,3 +54,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	data.loadFile();
 	ui.updateUI();
 });
+
+// ESLint will warn about any use of eval(), even this one
+// eslint-disable-next-line
+window.eval = global.eval = function () {
+	throw new Error(`Sorry, this app does not support window.eval().`)
+}
