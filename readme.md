@@ -2,6 +2,8 @@
 
 A small app to display reference images for artists. Inspired by [GestureDrawing3](https://cubebrush.co/advanches/products/d9q6yq/gesturedrawing), but with the ability to filter the displayed files, and designed to play well with [TagSpaces](https://www.tagspaces.org/).
 
+![Imgur](https://i.imgur.com/Yzlw96d.png)
+
 ## Features
 
 * Bring your own art reference folder
@@ -24,6 +26,8 @@ A small app to display reference images for artists. Inspired by [GestureDrawing
 
 * [Github releases](https://github.com/arcandio/TagRef/releases)
 
+![Imgur](https://i.imgur.com/kn8f4S0.png)
+
 ## Bugs
 
 * [Github Issues](https://github.com/arcandio/TagRef/issues)
@@ -34,6 +38,6 @@ I made this because I needed it. If TagRef helped you, please consider donating.
 
 **Bitcoin:** 3BjKNt5XH7w2TRGKbhpr1F7Pc54qEHcc7P
 
-![](F:\freelance\repos\TagRef\TagRef\src\assets\3BjKNt5XH7w2TRGKbhpr1F7Pc54qEHcc7P.png)
+![3BjKNt5XH7w2TRGKbhpr1F7Pc54qEHcc7P](https://i.imgur.com/rr3ExzA.png)
 
 **Paypal:** [Payal.me/voidspiral](http://paypal.me/voidspiral)
