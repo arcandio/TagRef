@@ -138,6 +138,14 @@ exports.updateUI = function () {
 	else {
 		document.getElementById("completionLog").style.display = "none";
 	}
+	// ND log
+	if(appsettings.savend){
+		document.getElementById("savenowdrawing").checked = true;
+	}
+	else{
+		document.getElementById("savenowdrawing").checked = false;
+	}
+	// Update stats and button
 	exports.updateStats();
 	exports.updateStartButton();
 };

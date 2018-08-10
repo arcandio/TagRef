@@ -124,6 +124,38 @@ exports.setUpLogStream = function () {
 		document.getElementById('open-log').style.display = "none";
 	}
 };
+exports.setNowDrawing = function () {
+	// set the ND bool from the ui
+	appsettings.savend = document.getElementById("savenowdrawing").checked;
+	// if it's set and we don't have a location, throw the dialog
+	if(appsettings.savend && !appsettings.ndpath){
+		exports.setNDFile();
+	}
+	exports.saveSettings();
+};
+exports.setNDFile = function () {
+	// throw a dialog
+	dialog.showSaveDialog({
+		title:"Save Now Drawing text file",
+		defaultpath: model.folders[0],
+		filters: [{name: 'text', extensions:['txt']}]
+	}, function(path) {
+		// set the result as the ND file location
+		appsettings.ndpath = path;
+		// save placeholder file
+		//exports.setUpNDStream();
+		//state.ndstream.write("Now Drawing: ...");
+		// save decision
+		exports.saveSettings();
+		exports.saveSessionFile();
+	});
+
+};
+exports.setUpNDStream = function (){
+	if (appsettings.ndpath && appsettings.savend){
+		state.ndstream = fs.createWriteStream(appsettings.ndpath, {flags: 'w'});
+	}
+};
 exports.clearData = function(){
 	localStorage.removeItem("application settings");
 	localStorage.removeItem("session settings");

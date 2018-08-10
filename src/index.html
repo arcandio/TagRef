@@ -107,8 +107,17 @@
 					</div>
 					<hr>
 					<p><strong>Options</strong></p>
-					<input type="checkbox" id="save-log">
-					<label for="save-log">Save drawing log</label>
+					<label>
+						<input type="checkbox" id="save-log">
+						Save drawing log
+					</label>
+					<br>
+					<label title="Saves a text file with the last filename for you to use while streaming.">
+						<input type="checkbox" id="savenowdrawing">
+						Save Now Drawing file
+					</label>
+					<button id="nowdrawinglocation">Pick Location</button>
+
 					<br>
 					<label for="vsetting">Volume </label>
 					<input type="range" class="volume" min="0" max="1" value=".5" step=".1" id="vsetting">

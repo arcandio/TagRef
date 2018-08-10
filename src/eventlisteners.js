@@ -31,7 +31,9 @@ exports.attach = function() {
 
 	document.querySelector("#structured-settings .newrow").addEventListener('click', mode.appendNewRow);
 
-	document.querySelector("#save-log").addEventListener('change', data.setSaveLog());
+	document.querySelector("#save-log").addEventListener('change', data.setSaveLog);
+	document.querySelector("#savenowdrawing").addEventListener('change', data.setNowDrawing);
+	document.querySelector("#nowdrawinglocation").addEventListener('click', data.setNDFile);
 	document.querySelector("#settings .volume").addEventListener('change', display.setVolume);
 	document.querySelector("#settings #mutest").addEventListener('click', display.mute);
 

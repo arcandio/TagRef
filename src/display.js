@@ -13,6 +13,7 @@ exports.togglePage = function (page) {
 exports.startNewSession = function  () {
 	// setup log
 	data.setUpLogStream();
+	data.setUpNDStream();
 	// setup event list
 	buildEventList();
 	// start display
@@ -182,6 +183,7 @@ exports.showImage = function (e) {
 	e.fliph ? cl.add('flip-h') : cl.remove('flip-h');
 	//write to log
 	exports.writeLog(e);
+	exports.writeND(e);
 };
 exports.doEvent = function (reverse) {
 	// pick the next event to show, whether it's forward or backward
@@ -305,6 +307,24 @@ exports.writeLog = function (e){
 	//console.log(line);
 	if (state.logstream) {
 		state.logstream.write('\n' + line);
+	}
+};
+exports.writeND = function (e) {
+	let n = e.image;
+	// get just the file name
+    n = n.split('\\').pop().split('/').pop();
+	// update the file
+	console.log(appsettings.ndpath);
+	console.log(state.ndstream);
+	console.log(appsettings.savend);
+	console.log(n);
+	if (state.ndstream && appsettings.savend){
+		console.log(state.ndstream);
+		//state.ndstream.write(n);
+		// Look I know this isn't threadsafe, but it shouldn't take 30 seconds to finish this writefile, and the stream writer doesn't overwrite because it's kept open.
+		fs.writeFile(appsettings.ndpath, n, err => {
+
+		});
 	}
 };
 exports.exitSession = function () {
