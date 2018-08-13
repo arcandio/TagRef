@@ -174,16 +174,29 @@ exports.showImage = function (e) {
 	//console.log(e.image);
 	// grab the element
 	let d = document.getElementById("display");
-	//console.log(d)
-	d.style.backgroundImage = "url( '" + e.image + "' )";
-	// apply settings
+	let exists = fs.existsSync(e.image);
 	let cl = d.classList;
-	e.grayscale ? cl.add('grayscale') : cl.remove('grayscale');
-	e.flipv ? cl.add('flip-v') : cl.remove('flip-v');
-	e.fliph ? cl.add('flip-h') : cl.remove('flip-h');
-	//write to log
-	exports.writeLog(e);
-	exports.writeND(e);
+	if (exists){
+		d.style.backgroundImage = "url( '" + e.image + "' )";
+		// apply settings
+		e.grayscale ? cl.add('grayscale') : cl.remove('grayscale');
+		e.flipv ? cl.add('flip-v') : cl.remove('flip-v');
+		e.fliph ? cl.add('flip-h') : cl.remove('flip-h');
+		//write to log
+		exports.writeLog(e);
+		exports.writeND(e);
+	}
+	else {
+		//console.log("Image missing");
+		// clear the bg
+		d.style.backgroundImage = null;
+		cl.remove('flip-h');
+		cl.remove('flip-v');
+		cl.remove('grayscale');
+		// write to log
+		exports.writeLog(e, true);
+		exports.writeND(e, true);
+	}
 };
 exports.doEvent = function (reverse) {
 	// pick the next event to show, whether it's forward or backward
@@ -296,34 +309,38 @@ exports.incrementCounters = function (){
 		}
 	}
 };
-exports.writeLog = function (e){
+exports.writeLog = function (e, broken){
 	let f = e.image;
 	f = f ? f : e.breakmessage;
 	//f = f.slice(5,-2);
 	let line = new Date();
 	line = dateformat(line, 'longTime');
 	line += " ";
+	line += broken ? "could not find image " : "";
 	line += f;
 	//console.log(line);
 	if (state.logstream) {
 		state.logstream.write('\n' + line);
 	}
 };
-exports.writeND = function (e) {
+exports.writeND = function (e, broken) {
 	let n = e.image;
 	// get just the file name
     n = n.split('\\').pop().split('/').pop();
+    n = broken ? "could not find image " + n : n;
 	// update the file
-	console.log(appsettings.ndpath);
-	console.log(state.ndstream);
-	console.log(appsettings.savend);
-	console.log(n);
+	//console.log(appsettings.ndpath);
+	//console.log(state.ndstream);
+	//console.log(appsettings.savend);
+	//console.log(n);
 	if (state.ndstream && appsettings.savend){
-		console.log(state.ndstream);
+		//console.log(state.ndstream);
 		//state.ndstream.write(n);
 		// Look I know this isn't threadsafe, but it shouldn't take 30 seconds to finish this writefile, and the stream writer doesn't overwrite because it's kept open.
 		fs.writeFile(appsettings.ndpath, n, err => {
-
+			if(err){
+				throw err;
+			}
 		});
 	}
 };

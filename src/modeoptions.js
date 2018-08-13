@@ -138,7 +138,7 @@ exports.setStructuredEvents = function () {
 	ui.updateUI();
 };
 exports.calcStructuredTime = function () {
-	console.log("cst");
+	//console.log("cst");
 	model.structured.totaltime = 0;
 	if (model.structured && model.structured.events){
 		model.structured.events.forEach(function(e){
