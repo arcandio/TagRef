@@ -11,7 +11,7 @@ exports.saveSession = function () {
 };
 exports.saveFile = function () {
 	if(!appsettings.lastsave){
-		saveAs();
+		exports.saveAs();
 	}
 	else {
 		exports.saveSessionFile();
@@ -89,7 +89,7 @@ exports.loadSettings = function () {
 	document.getElementById("save-log").checked = appsettings.savelog ? appsettings.savelog : true;
 	// if we don't have a count, make one
 	if (!appsettings.stats) {
-		as = {};
+		let as = {};
 		as.count = 0;
 		as.lastday = util.todaysDate();
 		as.drawntoday = false;
