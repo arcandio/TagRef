@@ -44,13 +44,15 @@ exports.loadFile = function () {
 	// we had a last save location
 	if (appsettings.lastsave) {
 		fs.readFile(appsettings.lastsave, 'utf8', function(err, contents){
-			localStorage.setItem("session settings", contents);
-			//console.log('load last save');
-			exports.loadSession();
+			if (contents){
+				localStorage.setItem("session settings", contents);
+				//console.log('load last save');
+				//exports.loadSession();
+			}
 		});
 	}
 	// we didn't have a save, but we had local settings
-	else if (localStorage.getItem('session settings') !== null) {
+	if (localStorage.getItem('session settings') !== null) {
 		//console.log('session settings');
 		exports.loadSession();
 	}
