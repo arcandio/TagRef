@@ -64,19 +64,23 @@ exports.attach = function() {
 
 };
 exports.attachRows = function (){
+	console.log("attachRows");
 	// get the table
 	let table = document.querySelector("#structured-settings table");
-	let inputs = table.querySelectorAll("input");
-	if(inputs){
+	let rows = table.querySelectorAll("input");
+	console.log(rows);
+	if(rows){
+		let inputs = table.getElementsByTagName("input");
 		for (let i=0; i<inputs.length; i++){
 			let element = inputs[i];
-			//console.log(element);
+			console.log(element);
 			element.removeEventListener('change', mode.setStructuredEvents);
 			element.addEventListener('change', mode.setStructuredEvents);
 		}
 		let buttons = table.querySelectorAll(".delete");
 		for (let i=0; i<buttons.length; i++){
 			let button = buttons[i];
+			console.log(button);
 			button.removeEventListener('click', mode.removeRow);
 			button.addEventListener('click', mode.removeRow);
 		}

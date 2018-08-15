@@ -145,6 +145,7 @@ exports.updateUI = function () {
 	else{
 		document.getElementById("savenowdrawing").checked = false;
 	}
+	//mode.setStructuredEvents();
 	// Update stats and button
 	exports.updateStats();
 	exports.updateStartButton();

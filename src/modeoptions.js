@@ -132,8 +132,10 @@ exports.setStructuredEvents = function () {
 		model.structured.events.push(e);
 	}
 	exports.calcStructuredTime();
-	//save the model
+	// update ui
+	console.log(rows);
 	eventListeners.attachRows();
+	//save the model
 	data.saveSession();
 	ui.updateUI();
 };
@@ -159,7 +161,7 @@ exports.appendNewRow = function () {
 	//data.saveSession();
 };
 exports.removeRow = function (event){
-	//console.log(event);
+	console.log(event);
 	let elem = event.path[0];
 	let row = elem.parentElement.parentElement;
 	let table = row.parentElement;

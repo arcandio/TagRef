@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	data.loadSettings();
 	data.loadFile();
 	ui.updateUI();
-	eventListeners.attachRows();
+	//eventListeners.attachRows();
 });
 
 // ESLint will warn about any use of eval(), even this one

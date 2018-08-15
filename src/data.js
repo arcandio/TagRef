@@ -74,6 +74,7 @@ exports.loadSession = function () {
 	fl.setFolders(model.folders);
 	mode.calcFixedTime();
 	//mode.calcClassTime();
+	//eventListeners.attachRows();
 	mode.calcStructuredTime();
 	ui.updateUI();
 };
