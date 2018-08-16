@@ -41,23 +41,27 @@ exports.loadDialog = function () {
 	});
 };
 exports.loadFile = function () {
+	//console.log("loadFile");
+	//console.trace();
 	// we had a last save location
 	if (appsettings.lastsave) {
 		fs.readFile(appsettings.lastsave, 'utf8', function(err, contents){
+			//console.log('load last save');
 			if (contents){
+				//console.log('had contents');
 				localStorage.setItem("session settings", contents);
-				//console.log('load last save');
-				//exports.loadSession();
+				exports.loadSession();
 			}
 		});
 	}
 	// we didn't have a save, but we had local settings
-	if (localStorage.getItem('session settings') !== null) {
+	else if (localStorage.getItem('session settings') !== null) {
 		//console.log('session settings');
 		exports.loadSession();
 	}
 	// we've got nothing, load the base file
 	else {
+		//console.log('new file');
 		localStorage.setItem("session settings", JSON.stringify(newfile, null, 2));
 		exports.loadSession();
 	}
